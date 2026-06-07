@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정지성 | AI Engineer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #fff;
+  color: #222;
+  font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── PRINT ── */
+@media print {
+  .no-print { display: none !important; }
+  body { font-size: 11pt; }
+
+  /* 섹션/카드는 자연스럽게 페이지 흐름 허용 */
+  section { page-break-inside: auto; break-inside: auto; }
+  .proj-card { page-break-inside: auto; break-inside: auto; margin-bottom: 1.2rem; }
+
+  /* 카드 헤더는 다음 내용과 떨어지지 않도록 */
+  .proj-card-header { page-break-after: avoid; break-after: avoid; }
+
+  /* 서브 섹션 레이블과 바로 다음 내용이 분리되지 않도록 */
+  .sub-sec { page-break-after: avoid; break-after: avoid; }
+
+  /* 작은 단위 내부는 쪼개지지 않도록 보호 */
+  .ts-card { page-break-inside: avoid; break-inside: avoid; }
+  .contrib-list { page-break-inside: avoid; break-inside: avoid; }
+  .stack-row { page-break-inside: avoid; break-inside: avoid; }
+  .results-row { page-break-inside: avoid; break-inside: avoid; }
+  .pub-box { page-break-inside: avoid; break-inside: avoid; }
+  .exp-row { page-break-inside: avoid; break-inside: avoid; }
+  .proj-table { page-break-inside: avoid; break-inside: avoid; }
+  .profile-grid { page-break-inside: avoid; break-inside: avoid; }
+
+  a { color: #2563eb; text-decoration: none; }
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: #0f172a;
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 48px;
+}
+.nav-name { font-size: 14px; font-weight: 700; color: #60a5fa; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { font-size: 13px; color: #94a3b8; text-decoration: none; }
+.nav-links a:hover { color: #60a5fa; }
+
+/* ── PAGE WRAP ── */
+.page { max-width: 860px; margin: 0 auto; padding: 0 2.5rem; }
+
+/* ── HERO (dark) ── */
+.hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+  padding: 80px 0 48px;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.hero-eyebrow {
+  font-size: 13px;
+  color: #60a5fa;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.hero-name {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.3rem;
+}
+.hero-name span { color: #60a5fa; }
+.hero-bio {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.8;
+  margin-bottom: 1.4rem;
+  max-width: 560px;
+}
+.hero-contacts {
+  display: flex; flex-wrap: wrap; gap: 0.75rem;
+  margin-bottom: 1.4rem;
+  font-size: 13px; color: #cbd5e1;
+}
+.hero-contact {
+  display: flex; align-items: center; gap: 0.35rem;
+  color: #cbd5e1; text-decoration: none;
+}
+.hero-contact:hover { color: #60a5fa; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.badge {
+  font-size: 12px; font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(96,165,250,0.15);
+  border: 1px solid rgba(96,165,250,0.4);
+  color: #93c5fd;
+}
+.photo-box {
+  width: 220px; height: 260px;
+  border: 2px solid rgba(96,165,250,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: #475569; text-align: center;
+  overflow: hidden;
+}
+.photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── PROFILE GRID (3-col) ── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.profile-box {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+}
+.profile-box-title {
+  font-size: 11.5px; font-weight: 700; color: #2563eb;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.profile-item {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 3px 0;
+  font-size: 12.5px; color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+.profile-item:last-child { border-bottom: none; }
+.profile-item .key { font-weight: 500; color: #111; }
+.profile-item .val { color: #6b7280; font-size: 12px; }
+.profile-dot { font-size: 12.5px; color: #374151; padding: 3px 0; }
+.profile-dot::before { content: '• '; color: #2563eb; }
+
+/* ── SECTION ── */
+section { padding: 40px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: -0.01em;
+}
+
+/* ── SKILLS TABLE ── */
+.skills-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.skills-table tr { border-bottom: 1px solid #f3f4f6; }
+.skills-table tr:last-child { border-bottom: none; }
+.skills-table td { padding: 7px 10px; vertical-align: top; }
+.skills-table .cat {
+  font-size: 11px; font-weight: 700; color: #2563eb;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap; width: 110px;
+}
+.skills-table .tech { color: #111; font-weight: 500; width: 120px; }
+.skills-table .desc { color: #4b5563; }
+
+/* ── AWARDS TABLE ── */
+.awards-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.awards-table thead { background: #f8fafc; }
+.awards-table th {
+  padding: 8px 12px; font-size: 11.5px; font-weight: 700;
+  color: #374151; text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+}
+.awards-table td { padding: 9px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+.awards-table tr:last-child td { border-bottom: none; }
+.award-rank-gold { color: #2563eb; font-weight: 700; }
+.award-rank-silver { color: #374151; font-weight: 600; }
+
+/* ── PUBLICATION BOX ── */
+.pub-box {
+  border-left: 4px solid #2563eb;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+}
+.pub-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 0.25rem; }
+.pub-authors { color: #6b7280; margin-bottom: 0.2rem; }
+.pub-venue { color: #2563eb; font-weight: 600; }
+.pub-badge {
+  display: inline-block; margin-left: 0.5rem;
+  font-size: 11px; color: #1d4ed8;
+  background: #eff6ff; border: 1px solid #bfdbfe;
+  border-radius: 3px; padding: 1px 7px;
+}
+
+/* ── PROJECT SUMMARY TABLE ── */
+.proj-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden;
+  margin-bottom: 2rem; font-size: 12.5px;
+}
+.proj-table thead { background: #f3f4f6; }
+.proj-table th { padding: 8px 12px; font-size: 12px; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; text-align: left; }
+.proj-table td { padding: 8px 12px; color: #374151; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+.proj-table tr:last-child td { border-bottom: none; }
+.proj-table .num { color: #9ca3af; font-weight: 600; }
+.proj-table .pname { font-weight: 700; color: #111; }
+
+/* ── PROJECT CARD (황재찬 style) ── */
+.proj-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.proj-card-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+.proj-num-badge {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.proj-num-badge.teal  { background: #0891b2; }
+.proj-num-badge.indigo{ background: #4338ca; }
+.proj-num-badge.slate { background: #334155; }
+.proj-num-badge.green { background: #059669; }
+.proj-header-info { flex: 1; }
+.proj-title { font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.25; }
+.proj-tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe;
+  border-radius: 3px; padding: 1px 8px; margin-left: 0.5rem;
+  vertical-align: middle;
+}
+.proj-tag.gray { color: #374151; background: #f3f4f6; border-color: #e5e7eb; }
+.proj-meta-right {
+  text-align: right; font-size: 12px; color: #6b7280;
+  white-space: nowrap;
+}
+.proj-meta-right strong { color: #111; display: block; font-size: 13px; }
+
+.proj-body { padding: 1.25rem 1.5rem; }
+
+.proj-quote {
+  border-left: 4px solid #2563eb;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border-radius: 0 6px 6px 0;
+  font-size: 13px; color: #374151;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Stack chips */
+.stack-row {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+.stack-label {
+  font-size: 12px; font-weight: 700; color: #374151;
+  margin-right: 0.25rem;
+}
+.stack-chip {
+  font-size: 12px; padding: 2px 10px;
+  border-radius: 4px;
+  background: #f1f5f9; color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+/* 핵심 기여 */
+.contrib-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; }
+.contrib-item {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  padding: 6px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 13px; color: #374151;
+}
+.contrib-item:last-child { border-bottom: none; }
+.contrib-arrow { color: #2563eb; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.contrib-item strong { color: #111; }
+
+/* sub section label */
+.sub-sec {
+  font-size: 11.5px; font-weight: 700; color: #2563eb;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  margin: 1.1rem 0 0.6rem;
+  padding-left: 8px;
+  border-left: 3px solid #2563eb;
+}
+
+/* 기여도 바 */
+.role-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.role-row { display: flex; align-items: center; gap: 0.75rem; }
+.role-label { font-size: 12.5px; color: #374151; width: 220px; flex-shrink: 0; }
+.role-track { flex: 1; height: 5px; background: #e5e7eb; border-radius: 3px; }
+.role-fill { height: 100%; border-radius: 3px; background: #2563eb; }
+.role-pct { font-size: 12px; font-weight: 700; color: #2563eb; width: 36px; text-align: right; }
+
+/* 개발환경 테이블 */
+.env-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 0.5rem; }
+.env-table tr { border-bottom: 1px solid #f3f4f6; }
+.env-table tr:last-child { border-bottom: none; }
+.env-table td { padding: 5px 0; vertical-align: top; }
+.env-table td:first-child { color: #6b7280; font-weight: 600; width: 120px; }
+.env-table td:last-child { color: #374151; }
+
+/* Troubleshooting */
+.ts-card {
+  border: 1px solid #e5e7eb;
+  border-left: 3px solid #2563eb;
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+.ts-card-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  background: #f8fafc;
+  color: #1e3a5f;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px; font-weight: 700;
+}
+.ts-star { display: none; }
+.ts-body { display: grid; grid-template-columns: max-content 1fr; }
+.ts-row {
+  display: contents;
+}
+.ts-row-key {
+  padding: 6px 12px;
+  font-size: 11.5px; font-weight: 700;
+  background: #f9fafb;
+  border-right: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+  color: #6b7280;
+  white-space: nowrap;
+  display: flex; align-items: flex-start; padding-top: 8px;
+}
+.ts-row-key.problem { color: #dc2626; }
+.ts-row-key.try     { color: #2563eb; }
+.ts-row-key.result  { color: #059669; }
+.ts-row-key.lesson  { color: #7c3aed; }
+.ts-row-val {
+  padding: 7px 10px;
+  font-size: 12.5px; color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+.ts-row-val:last-child, .ts-row-key:last-child { border-bottom: none; }
+
+/* 성과 칩 */
+.results-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.result-chip {
+  font-size: 13px; font-weight: 700;
+  padding: 5px 14px; border-radius: 4px;
+  background: #eff6ff; border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+.result-chip.gray {
+  background: #f9fafb; border-color: #e5e7eb; color: #374151;
+}
+
+/* 프로젝트 이미지 갤러리 */
+.proj-images {
+  display: flex; flex-wrap: wrap; gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  justify-content: center;
+}
+.proj-images img {
+  height: 180px; width: auto;
+  max-width: 300px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  object-fit: contain;
+  background: #f9fafb;
+}
+
+/* ── EXPERIENCE ── */
+.exp-list { display: flex; flex-direction: column; }
+.exp-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 0 2rem; padding: 1.25rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.exp-row:last-child { border-bottom: none; }
+.exp-period { font-size: 12px; color: #6b7280; line-height: 1.5; }
+.exp-type {
+  display: inline-block; margin-top: 4px;
+  font-size: 11px; color: #9ca3af;
+  border: 1px solid #e5e7eb; border-radius: 3px; padding: 1px 6px;
+}
+.exp-org { font-size: 14.5px; font-weight: 700; color: #111; margin-bottom: 2px; }
+.exp-sub { font-size: 13px; color: #2563eb; font-weight: 500; margin-bottom: 0.4rem; }
+.exp-bullets { list-style: none; }
+.exp-bullets li {
+  font-size: 13px; color: #4b5563;
+  padding-left: 1rem; position: relative; margin-bottom: 2px;
+}
+.exp-bullets li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: #2563eb; font-size: 10px; top: 4px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 12px; color: #9ca3af;
+}
+footer a { color: #2563eb; text-decoration: none; }
+
+@media (max-width: 640px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .photo-box { display: none; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .exp-row { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .proj-meta-right { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav no-print">
+  <span class="nav-name">정지성 · AI Engineer</span>
+  <div class="nav-links">
+    <a href="#experiences">경력</a>
+    <a href="#awards">수상</a>
+    <a href="#publications">논문</a>
+    <a href="#projects">프로젝트</a>
+    <a href="#skills">스킬</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="page">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">AI Engineer · Computer Vision · LLM</div>
+        <h1 class="hero-name">문제를 끝까지 파고드는 개발자,<br><span>정지성</span>입니다.</h1>
+        <p class="hero-bio">
+          Computer Vision, 생체신호 AI, LLM 기반 프로젝트를 수행하며<br>
+데이터를 이해하고, 모델을 설계하고, 결과를 개선하는 과정을 반복해왔습니다.<br>
+문제를 정의하는 단계부터 구현과 검증까지 책임지는 AI 엔지니어로 성장하고 있습니다.  
+        </p>
+        <div class="hero-contacts">
+          <a class="hero-contact" href="mailto:wjdwltjd324800@gmail.com">
+            ✉ wjdwltjd324800@gmail.com
+          </a>
+        </div>
+        <div class="hero-badges">
+          <span class="badge">SSAFY 수료중</span>
+          <span class="badge">KCI 1저자</span>
+          <span class="badge">C++ A형</span>
+          <span class="badge">#Computer_Vision</span>
+          <span class="badge">#VLM</span>
+          <span class="badge">#Deep_Learning</span>
+          <span class="badge">#LLM</span>
+          <span class="badge">#Prompt_Engineering</span>
+        </div>
+      </div>
+      <div class="photo-box">
+        <img src="../my/프로필 사진.png" alt="프로필 사진" onerror="this.parentElement.innerHTML='사진<br>추가<br>예정'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- PROFILE SUMMARY -->
+<div class="profile-grid">
+
+  <div class="profile-box">
+    <div class="profile-box-title">학력 / 경력</strong></div>
+    <div class="profile-item">
+      <span class="key">SSAFY 15기</span>
+      <span class="val">2026 — 현재</span>
+      
+    </div>
+    <div class="profile-item">
+      <span class="key">조선대학교 AI공학전공</span>
+      <span class="val">2022 — 2026</span>
+    </div>
+    <div class="profile-item">
+      <span class="key">IDP Lab 학부연구생</span>
+      <span class="val">2023 — 2024</span>
+    </div>
+    <div class="profile-item">
+      <span class="key">창업동아리</span>
+      <span class="val">2024 — 2025</span>
+    </div>
+  </div>
+
+  <div class="profile-box">
+    <div class="profile-box-title">수상 / 논문</div>
+    <div class="profile-dot">동남권 이노베이션 해커톤 대상 &nbsp;<span style="color:#9ca3af;font-size:11px;">2025.11</span></div>
+    <div class="profile-dot">2025 SUMTECH 해커톤 대상 &nbsp;<span style="color:#9ca3af;font-size:11px;">2025.10</span></div>
+    <div class="profile-dot">호남권 LLM 해커톤 최우수상 &nbsp;<span style="color:#9ca3af;font-size:11px;"><br>2025.08</span></div>
+    <div class="profile-dot">SW중심대학 아이디어 경진 금상 &nbsp;<span style="color:#9ca3af;font-size:11px;">2025.11</span></div>
+    <div class="profile-dot">KCI 1저자 논문 게재 &nbsp;<span style="color:#9ca3af;font-size:11px;"><br>한국차세대컴퓨팅학회 2024.04</span></div>
+  </div>
+
+  <div class="profile-box">
+    <div class="profile-box-title">주요 활동</div>
+    <div class="profile-dot">SSAFY 15기 Embedded Robot 트랙</div>
+    <div class="profile-dot">IDP Lab 학부연구생<br> (생체신호 기반 사용자 식별)</div>
+    <div class="profile-dot">해커톤 5회 참가 / 4회 수상</div>
+    <div class="profile-dot">TCN-BiLSTM 모델 연구·설계</div>
+  </div>
+
+</div>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="section-header">
+    <h2 class="section-title">EXPERIENCES</h2>
+  </div>
+
+  <div class="exp-list">
+
+    <div class="exp-row">
+      <div>
+        <div class="exp-period">2026.01 — 현재</div>
+        <span class="exp-type">교육</span>
+      </div>
+      <div>
+        <div class="exp-org">SSAFY (삼성 청년 SW/AI 아카데미)</div>
+        <div class="exp-sub">Embedded Robot Track</div>
+        <ul class="exp-bullets">
+          <li>SW·AI 기반 임베디드 로봇 시스템 개발</li>
+          <li>C/C++ 기반 문제 해결 및 협업 역량 강화</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-row">
+      <div>
+        <div class="exp-period">2024.06 — 2025.12</div>
+        <span class="exp-type">창업동아리</span>
+      </div>
+      <div>
+        <div class="exp-org">창업동아리</div>
+        <div class="exp-sub">선박 결함 탐지 및 챗봇 개발</div>
+        <ul class="exp-bullets">
+          <li>선박 결함 탐지 AI 모델 개발</li>
+          <li>챗봇 서비스 개발 및 운영</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-row">
+      <div>
+        <div class="exp-period">2023.05 — 2024.06</div>
+        <span class="exp-type">학부연구생</span>
+      </div>
+      <div>
+        <div class="exp-org">IDP Lab (Intelligent Data Processing)</div>
+        <div class="exp-sub">생체 신호 기반 운전자 식별 연구</div>
+        <ul class="exp-bullets">
+          <li>심전도(ECG) 신호를 활용한 운전자 식별 시스템 연구</li>
+          <li>TCN-BiLSTM 앙상블 모델 설계 및 학습</li>
+          <li>KCI 논문 1저자 게재 완료</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-row" style="border-bottom:none;">
+      <div>
+        <div class="exp-period">2022.03 — 2026.02</div>
+        <span class="exp-type">학력</span>
+      </div>
+      <div>
+        <div class="exp-org">조선대학교</div>
+        <div class="exp-sub">인공지능공학전공 / 학사 졸업</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-header">
+    <h2 class="section-title">AWARDS &amp; COMPETITIONS</h2>
+  </div>
+
+  <table class="awards-table">
+    <thead>
+      <tr>
+        <th style="width:70px;">연도</th>
+        <th>대회명</th>
+        <th>주관</th>
+        <th>수상</th>
+        <th>주제</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2025.11</td>
+        <td><strong>동남권 이노베이션 해커톤</strong></td>
+        <td>정보통신산업진흥원</td>
+        <td class="award-rank-gold">대상 (부산정보산업진흥원장상)</td>
+        <td>디지털신기술 활용 동남권(부울경) 지역 활성화 / 사회 문제 해결</td>
+      </tr>
+      <tr>
+        <td>2025.10</td>
+        <td><strong>2025 SUMTECH 해커톤</strong></td>
+        <td>과학기술정보통신부</td>
+        <td class="award-rank-gold">대상 (정보통신기획평가원장상)</td>
+        <td>세상을 바꾸는 인공지능 서비스 개발</td>
+      </tr>
+      <tr>
+        <td>2025.09</td>
+        <td><strong>K Intelligence 프롬프트 엔지니어링 해커톤</strong></td>
+        <td>KT / K Intelligence</td>
+        <td>본선 진출 &amp; 4위 / 1020팀</td>
+        <td>SOTA K(KT 믿음 LLM) 기반 프롬프트 엔지니어링 서비스 개발</td>
+      </tr>
+      <tr>
+        <td>2025.08</td>
+        <td><strong>2025 호남권 LLM 해커톤</strong></td>
+        <td>SW중심대학협의회</td>
+        <td class="award-rank-gold">최우수상 (SW중심대학사업단장상)</td>
+        <td>HyperCLOVA X 기반 생성형 AI 서비스 개발</td>
+      </tr>
+      <tr>
+        <td>2025.11</td>
+        <td><strong>SW중심대학 오픈소스 아이디어 경진대회</strong></td>
+        <td>조선대학교</td>
+        <td class="award-rank-gold">금상 (SW중심대학사업단장상)</td>
+        <td>오픈소스를 활용한 AI 서비스 개발</td>
+      </tr>
+      <tr>
+        <td>2025.11</td>
+        <td><strong>IT 캡스톤디자인 경진대회</strong></td>
+        <td>조선대학교</td>
+        <td class="award-rank-silver">은상(IT융합대학장상)</td>
+        <td>--</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-header">
+    <h2 class="section-title">PUBLICATIONS</h2>
+  </div>
+  <div class="pub-box">
+    <div class="pub-title">TCN-BiLSTM 앙상블 모델 기반 심전도를 이용한 운전자 식별 시스템</div>
+    <div class="pub-authors">정지성 · IDP Lab (Intelligent Data Processing)</div>
+    <div class="pub-venue">KCI — 게재 학술지: 한국차세대컴퓨팅학회 <span class="pub-badge">1저자</span></div>
+    <div style="margin-top:6px;">
+      <a href="https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART003078589" target="_blank" style="color:#2563eb;font-size:12.5px;text-decoration:none;">[KCI 논문 원문 보기]</a>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <h2 class="section-title">SKILLS</h2>
+  </div>
+
+  <table class="skills-table">
+    <tr>
+      <td class="cat" rowspan="2">LANGUAGES</td>
+      <td class="tech">Python</td>
+      <td class="desc">딥러닝 모델 학습, LLM 연동, FastAPI 서버 개발 등 대부분의 프로젝트 수행 &nbsp;<span style="color:#9ca3af;font-size:11px;">--%</span></td>
+    </tr>
+    <tr>
+      <td class="tech">C++</td>
+      <td class="desc">알고리즘 문제 해결, SSAFY Embedded Robot 트랙 개발 &nbsp;<span style="color:#2563eb;font-size:11px;font-weight:700;">A형</span> &nbsp;<span style="color:#9ca3af;font-size:11px;">--%</span></td>
+    </tr>
+    <tr>
+      <td class="cat" rowspan="4">FRAMEWORK</td>
+      <td class="tech">PyTorch</td>
+      <td class="desc">TCN-BiLSTM 앙상블 모델, KoELECTRA / KOBERT 파인튜닝</td>
+    </tr>
+    <tr>
+      <td class="tech">FastAPI</td>
+      <td class="desc">LLM 연동 AI 백엔드 서버 구현, Node.js와 이중 서버 구조 설계</td>
+    </tr>
+    <tr>
+      <td class="tech">LangChain</td>
+      <td class="desc">FAISS 기반 RAG 파이프라인, HyperCLOVA X / KT 믿음 LLM 연동</td>
+    </tr>
+    <tr>
+      <td class="tech">OpenCV / HuggingFace</td>
+      <td class="desc">Computer Vision 파이프라인, 사전학습 모델 파인튜닝 및 추론</td>
+    </tr>
+    <tr>
+      <td class="cat" rowspan="2">AI / ML</td>
+      <td class="tech">Computer Vision</td>
+      <td class="desc">Object Detection, VLM, 생체 신호 기반 인식, Time Series 분석</td>
+    </tr>
+    <tr>
+      <td class="tech">Prompt Engineering</td>
+      <td class="desc">Chain-of-Thought, Few-shot, 출력 형식 제어 — K Intelligence 본선 4위</td>
+    </tr>
+    <tr>
+      <td class="cat">INFRA / TOOLS</td>
+      <td class="tech">Docker · Linux · Git</td>
+      <td class="desc">Docker Compose 멀티 서비스 오케스트레이션, Nginx HTTPS, Linux 서버 운영</td>
+    </tr>
+  </table>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <h2 class="section-title">PROJECTS</h2>
+  </div>
+
+  <!-- 요약 테이블 -->
+  <table class="proj-table">
+    <thead>
+      <tr>
+        <th style="width:28px;">#</th>
+        <th>프로젝트명</th>
+        <th>한줄 소개</th>
+        <th>역할</th>
+        <th>기간</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="pname">동남권 이노베이션 해커톤 <br>— RunWave</td>
+        <td>부산 AI 러닝 코스 추천 플랫폼 (대상)</td>
+        <td>AI/백엔드 개발</td>
+        <td>2025.11</td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td class="pname">SUMTECH 해커톤 <br>— 요즘어때</td>
+        <td>RAG 기반 AI 건강 상담 플랫폼 (대상)</td>
+        <td>AI 모델/백엔드 개발</td>
+        <td>2025.10</td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td class="pname">호남권 LLM 해커톤 <br>— nailclova</td>
+        <td>HyperCLOVA X 기반 스마트 일정 관리 (최우수상)</td>
+        <td>AI/백엔드 개발</td>
+        <td>2025.08</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td class="pname">K Intelligence 해커톤 <br>— 프롬프트엔지니어링</td>
+        <td>KT 믿음 LLM 프롬프트 엔지니어링 서비스 (본선 4위)</td>
+        <td>프롬프트 엔지니어링/백엔드</td>
+        <td>2025.09</td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td class="pname">TCN-BiLSTM 기반 ECG 운전자 식별 시스템</td>
+        <td>심전도 생체신호 기반 딥러닝 운전자 신원 식별 — KCI 1저자</td>
+        <td>연구 설계 / 모델 학습 / 논문 작성</td>
+        <td>2023.05 — 2024.06</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PROJECT 01 -->
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-num-badge">1</div>
+      <div class="proj-header-info">
+        <div class="proj-title">동남권 이노베이션 해커톤 — RunWave <span class="proj-tag">대상</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px;">AI와 공공데이터를 활용한 부산 런케이션 플랫폼</div>
+      </div>
+      <div class="proj-meta-right">
+        <strong>2025.11</strong>
+        해커톤 · 정보통신산업진흥원
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-images">
+        <img src="../hack-Ict_Innohack/1.png" alt="RunWave 화면 1">
+        <img src="../hack-Ict_Innohack/2.png" alt="RunWave 화면 2">
+      </div>
+      <div class="proj-quote">
+        부산(부울경) 지역의 디지털신기술 활용 사회문제 해결을 주제로 개발한 AI 러닝 코스 추천 플랫폼입니다.
+        지역·테마·거리·난이도를 선택하면 Upstage Solar LLM이 맞춤 러닝 코스를 생성하고,
+        Kakao Maps와 부산 공공데이터 API를 연동해 경로 시각화 및 주변 오아시스(맛집, 카페, 편의점) 정보를 제공합니다.
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Stack</span>
+        <span class="stack-chip">React 19</span>
+        <span class="stack-chip">Node.js</span>
+        <span class="stack-chip">Express</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">FastAPI</span>
+        <span class="stack-chip">Upstage Solar LLM</span>
+        <span class="stack-chip">OpenAI GPT-4o-mini</span>
+        <span class="stack-chip">Kakao Maps API</span>
+      </div>
+
+      <div class="sub-sec">핵심 기여</div>
+      <div class="contrib-list">
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>지역/테마/거리/난이도 4단계 선택 기반 AI 러닝 코스 자동 생성 (Upstage Solar LLM)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>Kakao Maps REST API로 경로 폴리라인, 출발/도착 마커, 중간 경유지 시각화</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>부산 공공데이터 API로 코스 500m 이내 오아시스(맛집, 카페, 편의점) 추천</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>GPT-4o-mini Vision API 활용 이미지 분석 기능 (릴스 대본 생성)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>AI 코스 생성 백엔드(LLM 연동) <strong>90%</strong> · Kakao Maps 경로 시각화 <strong>80%</strong> · 공공데이터 연동 <strong>80%</strong></span></div>
+      </div>
+
+      <div class="sub-sec">Troubleshooting</div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 1 — Kakao Maps 경로 생성 시 좌표 오차로 인한 경로 이탈</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">공공데이터에서 수집한 POI 좌표를 그대로 사용하면 경로가 비현실적으로 생성됨</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">Kakao Map 방향 검색 API에서 반환하는 구간별 안내 좌표를 기준으로 경유지 재정렬, 폴리라인 포인트 단순화 적용</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">경로 이탈 문제 해결 및 지도 시각화 품질 향상</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">외부 데이터 품질과 좌표 처리 방식이 지도 시각화 결과에 직접 영향을 미침</div>
+        </div>
+      </div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 2 — LLM 응답 지연으로 인한 UX 저하</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">Solar LLM 코스 설명 생성이 평균 3~5초 소요, 사용자가 응답 없이 대기하는 문제</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">스트리밍 방식으로 응답을 점진적으로 렌더링하고 로딩 상태 UI 추가</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">체감 대기 시간 단축 및 UX 개선</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">LLM 응답 지연은 스트리밍과 상태 관리로 사용자 경험을 크게 개선할 수 있음</div>
+        </div>
+      </div>
+
+      <div class="sub-sec">성과 및 결과</div>
+      <div class="results-row">
+        <span class="result-chip">대상 (부산정보산업진흥원장상)</span>
+        <span class="result-chip gray">정보통신산업진흥원 주관 · 2025.11</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 02 -->
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-num-badge teal">2</div>
+      <div class="proj-header-info">
+        <div class="proj-title">2025 SUMTECH 해커톤 — 요즘어때 <span class="proj-tag">대상</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px;">RAG + Fine-tuning 기반 AI 건강 상담 플랫폼</div>
+      </div>
+      <div class="proj-meta-right">
+        <strong>2025.10</strong>
+        해커톤 · 과학기술정보통신부
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-images">
+        <img src="../hack-sumtech/1.png" alt="요즘어때 화면 1">
+        <img src="../hack-sumtech/2.png" alt="요즘어때 화면 2">
+        <img src="../hack-sumtech/3.png" alt="요즘어때 화면 3">
+      </div>
+      <div class="proj-quote">
+        7,500개+ 의료 QA 데이터를 Elasticsearch로 인덱싱한 RAG 파이프라인과
+        10개 주요 질환 분류를 위해 직접 Fine-tuning한 GPT-4.1 mini를 결합하여
+        신뢰할 수 있는 AI 건강 상담 서비스를 구현했습니다.
+        증상 기반 상담, 미술 치료 감정 분석, 건강 지표 분석, 게이미피케이션 헬스 코칭을 제공합니다.
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Stack</span>
+        <span class="stack-chip">React 18</span>
+        <span class="stack-chip">Node.js</span>
+        <span class="stack-chip">Express</span>
+        <span class="stack-chip">Socket.io</span>
+        <span class="stack-chip">Elasticsearch 8.14</span>
+        <span class="stack-chip">Redis 7</span>
+        <span class="stack-chip">OpenAI GPT-4</span>
+        <span class="stack-chip">KoELECTRA</span>
+        <span class="stack-chip">KOBERT</span>
+        <span class="stack-chip">PyTorch</span>
+        <span class="stack-chip">Docker Compose</span>
+        <span class="stack-chip">Nginx</span>
+      </div>
+
+      <div class="sub-sec">핵심 기여</div>
+      <div class="contrib-list">
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>7,500개+ 의료 QA 데이터 Elasticsearch 인덱싱 + BM25 검색 → LLM 컨텍스트 주입 RAG 파이프라인 구축</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>10개 주요 질환 분류를 위한 GPT-4.1 mini Fine-tuning (Tool-call JSONL 형식, 19,000개 학습 샘플)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>KoELECTRA / KOBERT 한국어 질환 분류 모델 학습 및 평가 (PyTorch)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>GPT-4o-mini Vision API 미술 치료 감정 분석 + DALL-E 감정 시각화 이미지 생성</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>Socket.io 기반 다중 사용자 실시간 채팅룸 + 협업 화이트보드 구현</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>AI 모델 학습 <strong>90%</strong> · RAG 파이프라인 구축 <strong>85%</strong> · 백엔드 API 설계 <strong>70%</strong></span></div>
+      </div>
+
+      <div class="sub-sec">Troubleshooting</div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 1 — Elasticsearch 한국어 의료 용어 검색 정확도 부족</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">일반 형태소 분석기로는 "흉통", "빈혈" 등 의료 용어가 잘못 분리되어 검색 정확도 저하</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">nori_tokenizer에 의료 용어 커스텀 사전을 추가하고 BM25 파라미터 조정</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">의료 용어 검색 정밀도 향상, RAG 답변 품질 개선</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">도메인 특화 검색에서 형태소 사전 커스터마이징이 검색 정확도에 핵심적임</div>
+        </div>
+      </div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 2 — Fine-tuning 데이터 불균형으로 인한 질환 분류 편향</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">일부 질환 카테고리 학습 데이터가 편중되어 소수 클래스 분류 성능 저하</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">클래스별 샘플을 균등하게 재샘플링, OpenAI Fine-tuning을 Tool-call JSONL 형식으로 전환</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">분류 일관성 개선 및 소수 클래스 성능 향상</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">데이터 불균형은 모델 아키텍처보다 더 큰 성능 저하 요인이 될 수 있음</div>
+        </div>
+      </div>
+
+      <div class="sub-sec">성과 및 결과</div>
+      <div class="results-row">
+        <span class="result-chip">대상 (정보통신기획평가원장상)</span>
+        <span class="result-chip gray">과학기술정보통신부 주관 · 2025.10</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 03 -->
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-num-badge indigo">3</div>
+      <div class="proj-header-info">
+        <div class="proj-title">2025 호남권 LLM 해커톤 <span class="proj-tag">최우수상</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px;">HyperCLOVA X 기반 스마트 일정 관리 + AI 채팅 서비스</div>
+      </div>
+      <div class="proj-meta-right">
+        <strong>2025.08</strong>
+        해커톤 · SW중심대학협의회
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-images">
+        <img src="../hack-honamLLM/1.png" alt="호남권 LLM 해커톤 화면 1">
+        <img src="../hack-honamLLM/2.png" alt="호남권 LLM 해커톤 화면 2">
+        <img src="../hack-honamLLM/3.png" alt="호남권 LLM 해커톤 화면 3">
+      </div>
+      <div class="proj-quote">
+        Naver HyperCLOVA X와 LangChain을 활용하여 음성/이미지에서 일정을 자동 추출하고,
+        PDF 문서에 대한 RAG 기반 질의응답, AI 채팅을 통합한 스마트 일정 관리 서비스를 개발했습니다.
+        Node.js/Express + Python FastAPI 이중 서버 구조로 AI와 REST 역할을 분리했습니다.
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Stack</span>
+        <span class="stack-chip">React</span>
+        <span class="stack-chip">Node.js</span>
+        <span class="stack-chip">Express</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">FastAPI</span>
+        <span class="stack-chip">HyperCLOVA X</span>
+        <span class="stack-chip">LangChain</span>
+        <span class="stack-chip">FAISS</span>
+        <span class="stack-chip">MySQL</span>
+        <span class="stack-chip">JWT</span>
+      </div>
+
+      <div class="sub-sec">핵심 기여</div>
+      <div class="contrib-list">
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>HyperCLOVA X + LangChain 연동 AI 채팅 기능 구현 (LLM 연동 <strong>85%</strong>)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>FAISS 벡터 스토어 기반 PDF 문서 청크 저장 및 RAG 질의응답 파이프라인 (RAG 구축 <strong>80%</strong>)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>Multer로 이미지/파일 업로드 후 Pillow로 전처리하여 일정 정보 추출</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>Node.js/Express + Python FastAPI 이중 서버 구조로 역할 분리 (AI vs REST)</span></div>
+      </div>
+
+      <div class="sub-sec">Troubleshooting</div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 1 — HyperCLOVA X API 응답 형식 차이로 LangChain 연동 실패</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">일반 LangChain ChatOpenAI를 그대로 사용하면 HyperCLOVA X 응답 파싱 실패</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">langchain-naver 패키지의 ChatClovaX 적용 및 응답 포맷 차이를 흡수하는 파싱 레이어 추가</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">LLM 연동 안정화 및 정상 동작 확인</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">LangChain의 추상화가 편리하지만 특정 LLM에서는 커스텀 어댑터 작성이 필요함</div>
+        </div>
+      </div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 2 — Node.js — Python FastAPI 이중 서버 간 타임아웃</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">Express에서 FastAPI로 LLM 요청을 프록시할 때 기본 타임아웃이 짧아 오류 발생</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">Axios 타임아웃을 LLM 응답 시간에 맞게 조정, FastAPI 측에서 비동기 스트리밍 적용</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">타임아웃 오류 해소 및 서버 간 통신 안정화</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">이중 서버 구조에서는 내부 통신 타임아웃을 서비스 특성에 맞게 세밀히 조정해야 함</div>
+        </div>
+      </div>
+
+      <div class="sub-sec">성과 및 결과</div>
+      <div class="results-row">
+        <span class="result-chip">최우수상 (SW중심대학사업단장상)</span>
+        <span class="result-chip gray">SW중심대학협의회 주관 · 2025.08</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 04 -->
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-num-badge slate">4</div>
+      <div class="proj-header-info">
+        <div class="proj-title">K Intelligence 프롬프트 엔지니어링 해커톤 <span class="proj-tag gray">본선 4위</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px;">KT 믿음 LLM 기반 멀티모달 일정 관리 서비스 — 프롬프트 설계 중심 (1020팀 중 본선 진출)</div>
+      </div>
+      <div class="proj-meta-right">
+        <strong>2025.09</strong>
+        해커톤 · KT / K Intelligence
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-quote">
+        KT의 SOTA 한국어 LLM "믿음(K)"을 활용하여 음성·이미지·텍스트 멀티모달 입력을 처리하는 맞춤형 일정 관리 서비스를 개발한 프롬프트 엔지니어링 대회입니다.
+        개발 전 과정에서 LLM에 대한 체계적인 프롬프트 설계 전략을 수립하고, 논문 기반 기법을 실제 프로덕션에 적용하여 1020팀 중 본선 4위를 달성했습니다.
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Prompt</span>
+        <span class="stack-chip">Chain-of-Thought</span>
+        <span class="stack-chip">Few-shot</span>
+        <span class="stack-chip">Role Persona</span>
+        <span class="stack-chip">Output Schema</span>
+        <span class="stack-chip">Context Injection</span>
+      </div>
+      <div class="stack-row" style="margin-top:-0.75rem;">
+        <span class="stack-label">Stack</span>
+        <span class="stack-chip">KT 믿음 LLM</span>
+        <span class="stack-chip">HyperCLOVA X</span>
+        <span class="stack-chip">LangChain</span>
+        <span class="stack-chip">FAISS</span>
+        <span class="stack-chip">FastAPI</span>
+        <span class="stack-chip">Node.js</span>
+        <span class="stack-chip">React</span>
+      </div>
+
+      <div class="sub-sec">프롬프트 설계 전략</div>
+      <div class="contrib-list">
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span><strong>논문 기반 CoT 적용</strong> — "Take a deep breath and work on this problem step-by-step" (Yang et al., 2024) 문구를 전체 시스템 프롬프트에 일괄 적용, 논리적 일관성 및 지시 준수율 유의하게 향상 확인</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span><strong>역할 페르소나 부여</strong> — Frontend용 "HTML 파일 분석·분리 전문가", Backend용 "전문 소프트웨어 엔지니어이자 기술 문서 작성자" 등 도메인별 전문가 역할 명시</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span><strong>단계적 목표 세분화</strong> — 목표 전달 → 구체화 업데이트 → 기능별 세분화 요청의 3단계 프로세스로 복잡한 코드 생성을 분리, LLM 할루시네이션 감소</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span><strong>출력 형식 강제</strong> — JSON 스키마, 파일 구분 포맷(`=== script.js ===`), 항목별 규칙 번호화로 출력 일관성 확보 (<strong>90%</strong>)</span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span><strong>컨텍스트 주입</strong> — 디렉토리 구조, Clova Studio API 예제 코드, ERD 등 실제 프로젝트 컨텍스트를 프롬프트에 직접 포함하여 LLM의 코드 생성 정확도 향상 (<strong>85%</strong>)</span></div>
+      </div>
+
+      <div class="sub-sec">Troubleshooting</div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 1 — 자연어 일정 입력에서 LLM의 JSON 출력 불일치</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">날짜·시간·장소가 혼재된 자연어 입력에서 믿음 LLM이 구조화된 JSON을 일관되게 출력하지 못함</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">Few-shot 입출력 예시 3개 추가 + JSON 스키마 필드를 프롬프트 내 명시적으로 정의, CoT 문구 삽입</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">파싱 성공률 크게 향상, 일정 추출 기능 안정화</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">출력 형식 제어는 Few-shot + 스키마 명시 조합이 가장 효과적이며, CoT 지시문이 추가 안정성을 제공함</div>
+        </div>
+      </div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 2 — Backend 프롬프트 과도한 범위로 인한 응답 품질 저하</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">하나의 프롬프트에 "전체 서버 코드 작성" 요청 시 LLM이 일부 기능을 누락하거나 잘못 구현</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">목표 전달 → 구체화 → 세부 기능별 개별 요청으로 프롬프트를 3단계로 분리, 각 단계 출력을 다음 프롬프트의 컨텍스트로 연결</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">코드 누락 없이 전체 서버 구조 완성, 기능별 정확도 향상</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">LLM에게 복잡한 작업을 요청할 때는 단계 분리가 응답 품질에 직접적인 영향을 미침</div>
+        </div>
+      </div>
+
+      <div class="sub-sec">성과 및 결과</div>
+      <div class="results-row">
+        <span class="result-chip">본선 진출 · 4위 (1020팀 중)</span>
+        <span class="result-chip gray">KT / K Intelligence 주관 · 2025.09</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 05 -->
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-num-badge green">5</div>
+      <div class="proj-header-info">
+        <div class="proj-title">TCN-BiLSTM 앙상블 기반 ECG 운전자 식별 시스템 <span class="proj-tag gray">IDP Lab 연구</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px;">심전도 생체신호를 활용한 딥러닝 기반 운전자 신원 식별 — KCI 1저자 게재</div>
+      </div>
+      <div class="proj-meta-right">
+        <strong>2023.05 — 2024.06</strong>
+        조선대학교 IDP Lab
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-images">
+        <img src="../KCI/1.png" alt="ECG 논문 이미지 1">
+        <img src="../KCI/2.png" alt="ECG 논문 이미지 2">
+        <img src="../KCI/3.png" alt="ECG 논문 이미지 3">
+      </div>
+      <div class="proj-quote">
+        IDP Lab(Intelligent Data Processing) 학부연구생으로 참여하여, 심전도(ECG) 생체신호로 운전자를 식별하는 딥러닝 시스템을 연구·설계하고 KCI 학술지에 1저자로 게재했습니다.
+        TCN과 BiLSTM을 앙상블하여 시계열 ECG 신호의 지역 패턴과 시간 의존성을 동시에 포착하는 모델 구조를 제안했습니다.
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Stack</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">PyTorch</span>
+        <span class="stack-chip">NumPy</span>
+        <span class="stack-chip">SciPy</span>
+        <span class="stack-chip">scikit-learn</span>
+        <span class="stack-chip">Matplotlib</span>
+      </div>
+
+      <div class="sub-sec">핵심 기여</div>
+      <div class="contrib-list">
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>ECG 원시 신호 전처리 파이프라인 설계 (노이즈 제거, R-peak 검출, 세그먼트 추출) — <strong>100%</strong></span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>TCN + BiLSTM 앙상블 모델 구조 설계 및 PyTorch 구현 — <strong>90%</strong></span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>모델 학습·평가·비교 실험 수행 (Accuracy, F1-score 기준) — <strong>90%</strong></span></div>
+        <div class="contrib-item"><span class="contrib-arrow">→</span><span>KCI 논문 작성 (1저자) — 한국차세대컴퓨팅학회 게재</span></div>
+      </div>
+
+      <div class="sub-sec">Troubleshooting</div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 1 — ECG 신호 노이즈로 인한 R-peak 검출 오류</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">원시 ECG 신호에 기저선 표류(baseline wander)와 근전도 노이즈가 혼재하여 R-peak 검출 정확도 저하</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">Butterworth 대역통과 필터(0.5~40Hz) + Pan-Tompkins 알고리즘 조합으로 전처리 파이프라인 재구성</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">R-peak 검출 정확도 향상 및 세그먼트 품질 개선</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">생체신호 데이터는 전처리 품질이 모델 성능에 직접적인 영향을 미치며, 도메인 지식 기반 필터 설계가 필수임</div>
+        </div>
+      </div>
+      <div class="ts-card">
+        <div class="ts-card-header">Troubleshooting 2 — TCN 단독 모델과 BiLSTM 단독 모델의 성능 한계</div>
+        <div class="ts-body">
+          <div class="ts-row-key problem">문제</div><div class="ts-row-val">TCN은 지역 패턴에 강하나 장기 의존성이 약하고, BiLSTM은 반대 특성을 가져 각각 성능이 제한됨</div>
+          <div class="ts-row-key try">시도</div><div class="ts-row-val">두 모델의 출력을 concat 후 FC 레이어로 앙상블하는 구조 설계 및 가중치 조합 실험</div>
+          <div class="ts-row-key result">결과</div><div class="ts-row-val">단독 모델 대비 식별 정확도 향상, 앙상블 효과 검증</div>
+          <div class="ts-row-key lesson">배운 점</div><div class="ts-row-val">상호 보완적 특성의 모델을 앙상블하면 개별 모델의 약점을 효과적으로 보완할 수 있음</div>
+        </div>
+      </div>
+
+      <div class="sub-sec">성과 및 결과</div>
+      <div class="results-row">
+        <span class="result-chip">KCI 논문 1저자 게재</span>
+        <span class="result-chip gray">한국차세대컴퓨팅학회</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</div><!-- /page -->
+
+<footer>
+  <div class="page">
+    <p>정지성 &nbsp;·&nbsp; AI Engineer &nbsp;·&nbsp;
+      <a href="mailto:wjdwltjd324800@gmail.com">wjdwltjd324800@gmail.com</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
