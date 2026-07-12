@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>정지성 | AI Engineer Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   background: #fff;
   color: #222;
-  font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
   line-height: 1.7;
 }
@@ -41,28 +41,28 @@ body {
   .proj-table { page-break-inside: avoid; break-inside: avoid; }
   .profile-grid { page-break-inside: avoid; break-inside: avoid; }
 
-  a { color: #2563eb; text-decoration: none; }
+  a { color: #0d4a8f; text-decoration: none; }
 }
 
 /* ── NAV ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: #0f172a;
+  background: #0c2340;
   padding: 0 2rem;
   display: flex; align-items: center; justify-content: space-between;
   height: 48px;
 }
-.nav-name { font-size: 14px; font-weight: 700; color: #60a5fa; letter-spacing: -0.01em; }
+.nav-name { font-size: 14px; font-weight: 700; color: #8fb8e6; letter-spacing: -0.01em; }
 .nav-links { display: flex; gap: 1.5rem; }
 .nav-links a { font-size: 13px; color: #94a3b8; text-decoration: none; }
-.nav-links a:hover { color: #60a5fa; }
+.nav-links a:hover { color: #8fb8e6; }
 
 /* ── PAGE WRAP ── */
 .page { max-width: 860px; margin: 0 auto; padding: 0 2.5rem; }
 
 /* ── HERO (dark) ── */
 .hero {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+  background: #0c2340;
   padding: 80px 0 48px;
 }
 .hero-inner {
@@ -73,7 +73,7 @@ body {
 }
 .hero-eyebrow {
   font-size: 13px;
-  color: #60a5fa;
+  color: #8fb8e6;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -87,7 +87,7 @@ body {
   line-height: 1.15;
   margin-bottom: 0.3rem;
 }
-.hero-name span { color: #60a5fa; }
+.hero-name span { color: #8fb8e6; }
 .hero-bio {
   font-size: 13.5px;
   color: #94a3b8;
@@ -104,19 +104,19 @@ body {
   display: flex; align-items: center; gap: 0.35rem;
   color: #cbd5e1; text-decoration: none;
 }
-.hero-contact:hover { color: #60a5fa; }
+.hero-contact:hover { color: #8fb8e6; }
 .hero-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .badge {
   font-size: 12px; font-weight: 600;
   padding: 4px 12px;
-  border-radius: 20px;
-  background: rgba(96,165,250,0.15);
-  border: 1px solid rgba(96,165,250,0.4);
-  color: #93c5fd;
+  border-radius: 4px;
+  background: rgba(143,184,230,0.16);
+  border: 1px solid rgba(143,184,230,0.45);
+  color: #b7cde8;
 }
 .photo-box {
   width: 220px; height: 260px;
-  border: 2px solid rgba(96,165,250,0.3);
+  border: 2px solid rgba(143,184,230,0.3);
   border-radius: 8px;
   background: rgba(255,255,255,0.05);
   display: flex; align-items: center; justify-content: center;
@@ -138,7 +138,7 @@ body {
   padding: 1.1rem 1.25rem;
 }
 .profile-box-title {
-  font-size: 11.5px; font-weight: 700; color: #2563eb;
+  font-size: 11.5px; font-weight: 700; color: #0d4a8f;
   text-transform: uppercase; letter-spacing: 0.07em;
   margin-bottom: 0.75rem;
   display: flex; align-items: center; gap: 0.4rem;
@@ -153,7 +153,7 @@ body {
 .profile-item .key { font-weight: 500; color: #111; }
 .profile-item .val { color: #6b7280; font-size: 12px; }
 .profile-dot { font-size: 12.5px; color: #374151; padding: 3px 0; }
-.profile-dot::before { content: '• '; color: #2563eb; }
+.profile-dot::before { content: '• '; color: #0d4a8f; }
 
 /* ── SECTION ── */
 section { padding: 40px 0; }
@@ -166,7 +166,7 @@ section { padding: 40px 0; }
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #0d4a8f;
   letter-spacing: -0.01em;
 }
 
@@ -176,7 +176,7 @@ section { padding: 40px 0; }
 .skills-table tr:last-child { border-bottom: none; }
 .skills-table td { padding: 7px 10px; vertical-align: top; }
 .skills-table .cat {
-  font-size: 11px; font-weight: 700; color: #2563eb;
+  font-size: 11px; font-weight: 700; color: #0d4a8f;
   letter-spacing: 0.08em; text-transform: uppercase;
   white-space: nowrap; width: 110px;
 }
@@ -193,24 +193,24 @@ section { padding: 40px 0; }
 }
 .awards-table td { padding: 9px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
 .awards-table tr:last-child td { border-bottom: none; }
-.award-rank-gold { color: #2563eb; font-weight: 700; }
+.award-rank-gold { color: #0d4a8f; font-weight: 700; }
 .award-rank-silver { color: #374151; font-weight: 600; }
 
 /* ── PUBLICATION BOX ── */
 .pub-box {
-  border-left: 4px solid #2563eb;
+  border: 1px solid #e5e7eb;
   padding: 1rem 1.25rem;
   background: #f8fafc;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   font-size: 13px;
 }
 .pub-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 0.25rem; }
 .pub-authors { color: #6b7280; margin-bottom: 0.2rem; }
-.pub-venue { color: #2563eb; font-weight: 600; }
+.pub-venue { color: #0d4a8f; font-weight: 600; }
 .pub-badge {
   display: inline-block; margin-left: 0.5rem;
-  font-size: 11px; color: #1d4ed8;
-  background: #eff6ff; border: 1px solid #bfdbfe;
+  font-size: 11px; color: #0d4a8f;
+  background: #f0f4f9; border: 1px solid #cddcec;
   border-radius: 3px; padding: 1px 7px;
 }
 
@@ -227,10 +227,10 @@ section { padding: 40px 0; }
 .proj-table .num { color: #9ca3af; font-weight: 600; }
 .proj-table .pname { font-weight: 700; color: #111; }
 
-/* ── PROJECT CARD (황재찬 style) ── */
+/* ── PROJECT CARD ── */
 .proj-card {
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  border-radius: 6px;
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -243,21 +243,18 @@ section { padding: 40px 0; }
 .proj-num-badge {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: #2563eb;
+  background: #0d4a8f;
   color: #fff;
   font-size: 16px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.proj-num-badge.teal  { background: #0891b2; }
-.proj-num-badge.indigo{ background: #4338ca; }
-.proj-num-badge.slate { background: #334155; }
-.proj-num-badge.green { background: #059669; }
+/* 번호 배지 색상 통일 */
 .proj-header-info { flex: 1; }
 .proj-title { font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.25; }
 .proj-tag {
   display: inline-block; font-size: 11px; font-weight: 600;
-  color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe;
+  color: #0d4a8f; background: #f0f4f9; border: 1px solid #cddcec;
   border-radius: 3px; padding: 1px 8px; margin-left: 0.5rem;
   vertical-align: middle;
 }
@@ -271,10 +268,9 @@ section { padding: 40px 0; }
 .proj-body { padding: 1.25rem 1.5rem; }
 
 .proj-quote {
-  border-left: 4px solid #2563eb;
   padding: 0.75rem 1rem;
   background: #f8fafc;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   font-size: 13px; color: #374151;
   line-height: 1.8;
   margin-bottom: 1rem;
@@ -306,16 +302,14 @@ section { padding: 40px 0; }
   font-size: 13px; color: #374151;
 }
 .contrib-item:last-child { border-bottom: none; }
-.contrib-arrow { color: #2563eb; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.contrib-arrow { color: #0d4a8f; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
 .contrib-item strong { color: #111; }
 
 /* sub section label */
 .sub-sec {
-  font-size: 11.5px; font-weight: 700; color: #2563eb;
+  font-size: 11.5px; font-weight: 700; color: #0d4a8f;
   text-transform: uppercase; letter-spacing: 0.07em;
   margin: 1.1rem 0 0.6rem;
-  padding-left: 8px;
-  border-left: 3px solid #2563eb;
 }
 
 /* 기여도 바 */
@@ -323,8 +317,8 @@ section { padding: 40px 0; }
 .role-row { display: flex; align-items: center; gap: 0.75rem; }
 .role-label { font-size: 12.5px; color: #374151; width: 220px; flex-shrink: 0; }
 .role-track { flex: 1; height: 5px; background: #e5e7eb; border-radius: 3px; }
-.role-fill { height: 100%; border-radius: 3px; background: #2563eb; }
-.role-pct { font-size: 12px; font-weight: 700; color: #2563eb; width: 36px; text-align: right; }
+.role-fill { height: 100%; border-radius: 3px; background: #0d4a8f; }
+.role-pct { font-size: 12px; font-weight: 700; color: #0d4a8f; width: 36px; text-align: right; }
 
 /* 개발환경 테이블 */
 .env-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 0.5rem; }
@@ -337,8 +331,7 @@ section { padding: 40px 0; }
 /* Troubleshooting */
 .ts-card {
   border: 1px solid #e5e7eb;
-  border-left: 3px solid #2563eb;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   overflow: hidden;
   margin-bottom: 0.75rem;
 }
@@ -366,10 +359,7 @@ section { padding: 40px 0; }
   white-space: nowrap;
   display: flex; align-items: flex-start; padding-top: 8px;
 }
-.ts-row-key.problem { color: #dc2626; }
-.ts-row-key.try     { color: #2563eb; }
-.ts-row-key.result  { color: #059669; }
-.ts-row-key.lesson  { color: #7c3aed; }
+.ts-row-key.problem, .ts-row-key.try, .ts-row-key.result, .ts-row-key.lesson { color: #475569; }
 .ts-row-val {
   padding: 7px 10px;
   font-size: 12.5px; color: #374151;
@@ -382,8 +372,8 @@ section { padding: 40px 0; }
 .result-chip {
   font-size: 13px; font-weight: 700;
   padding: 5px 14px; border-radius: 4px;
-  background: #eff6ff; border: 1px solid #bfdbfe;
-  color: #1d4ed8;
+  background: #f0f4f9; border: 1px solid #cddcec;
+  color: #0d4a8f;
 }
 .result-chip.gray {
   background: #f9fafb; border-color: #e5e7eb; color: #374151;
@@ -419,7 +409,7 @@ section { padding: 40px 0; }
   border: 1px solid #e5e7eb; border-radius: 3px; padding: 1px 6px;
 }
 .exp-org { font-size: 14.5px; font-weight: 700; color: #111; margin-bottom: 2px; }
-.exp-sub { font-size: 13px; color: #2563eb; font-weight: 500; margin-bottom: 0.4rem; }
+.exp-sub { font-size: 13px; color: #0d4a8f; font-weight: 500; margin-bottom: 0.4rem; }
 .exp-bullets { list-style: none; }
 .exp-bullets li {
   font-size: 13px; color: #4b5563;
@@ -427,7 +417,7 @@ section { padding: 40px 0; }
 }
 .exp-bullets li::before {
   content: '▸'; position: absolute; left: 0;
-  color: #2563eb; font-size: 10px; top: 4px;
+  color: #0d4a8f; font-size: 10px; top: 4px;
 }
 
 /* ── FOOTER ── */
@@ -437,7 +427,7 @@ footer {
   text-align: center;
   font-size: 12px; color: #9ca3af;
 }
-footer a { color: #2563eb; text-decoration: none; }
+footer a { color: #0d4a8f; text-decoration: none; }
 
 @media (max-width: 640px) {
   .hero-inner { grid-template-columns: 1fr; }
@@ -468,12 +458,12 @@ footer a { color: #2563eb; text-decoration: none; }
   <div class="page">
     <div class="hero-inner">
       <div>
-        <div class="hero-eyebrow">AI Engineer · Computer Vision · LLM</div>
+        <div class="hero-eyebrow">AI Engineer · Data Pipeline · LLM</div>
         <h1 class="hero-name">문제를 끝까지 파고드는 개발자,<br><span>정지성</span>입니다.</h1>
         <p class="hero-bio">
-          Computer Vision, 생체신호 AI, LLM 기반 프로젝트를 수행하며<br>
-데이터를 이해하고, 모델을 설계하고, 결과를 개선하는 과정을 반복해왔습니다.<br>
-문제를 정의하는 단계부터 구현과 검증까지 책임지는 AI 엔지니어로 성장하고 있습니다.  
+          생체신호 AI, RAG, LLM 프로젝트에서 데이터 전처리부터 모델 학습,<br>
+서비스 배포와 운영까지 전 과정을 직접 다뤄왔습니다.<br>
+데이터가 흐르는 길을 설계하고 지키는 엔지니어로 성장하고 있습니다.
         </p>
         <div class="hero-contacts">
           <a class="hero-contact" href="mailto:wjdwltjd324800@gmail.com">
@@ -484,11 +474,10 @@ footer a { color: #2563eb; text-decoration: none; }
           <span class="badge">SSAFY 수료중</span>
           <span class="badge">KCI 1저자</span>
           <span class="badge">C++ A형</span>
-          <span class="badge">#Computer_Vision</span>
-          <span class="badge">#VLM</span>
-          <span class="badge">#Deep_Learning</span>
+          <span class="badge">#Data_Pipeline</span>
+          <span class="badge">#RAG</span>
           <span class="badge">#LLM</span>
-          <span class="badge">#Prompt_Engineering</span>
+          <span class="badge">#Docker_Linux</span>
         </div>
       </div>
       <div class="photo-box">
@@ -504,7 +493,7 @@ footer a { color: #2563eb; text-decoration: none; }
 <div class="profile-grid">
 
   <div class="profile-box">
-    <div class="profile-box-title">학력 / 경력</strong></div>
+    <div class="profile-box-title">학력 / 경력</div>
     <div class="profile-item">
       <span class="key">SSAFY 15기</span>
       <span class="val">2026 — 현재</span>
@@ -633,14 +622,14 @@ footer a { color: #2563eb; text-decoration: none; }
         <td><strong>동남권 이노베이션 해커톤</strong></td>
         <td>정보통신산업진흥원</td>
         <td class="award-rank-gold">대상 (부산정보산업진흥원장상)</td>
-        <td>디지털신기술 활용 동남권(부울경) 지역 활성화 / 사회 문제 해결</td>
+        <td>RunWave — 지역 상권과 러너를 잇는 런케이션 서비스 개발</td>
       </tr>
       <tr>
         <td>2025.10</td>
         <td><strong>2025 SUMTECH 해커톤</strong></td>
         <td>과학기술정보통신부</td>
         <td class="award-rank-gold">대상 (정보통신기획평가원장상)</td>
-        <td>세상을 바꾸는 인공지능 서비스 개발</td>
+        <td>요즘어때 — AI 건강 셀프 체크 서비스 개발</td>
       </tr>
       <tr>
         <td>2025.09</td>
@@ -654,7 +643,7 @@ footer a { color: #2563eb; text-decoration: none; }
         <td><strong>2025 호남권 LLM 해커톤</strong></td>
         <td>SW중심대학협의회</td>
         <td class="award-rank-gold">최우수상 (SW중심대학사업단장상)</td>
-        <td>HyperCLOVA X 기반 생성형 AI 서비스 개발</td>
+        <td>Naeil Clova — 맞춤형 일정 관리 서비스 개발</td>
       </tr>
       <tr>
         <td>2025.11</td>
@@ -662,13 +651,6 @@ footer a { color: #2563eb; text-decoration: none; }
         <td>조선대학교</td>
         <td class="award-rank-gold">금상 (SW중심대학사업단장상)</td>
         <td>오픈소스를 활용한 AI 서비스 개발</td>
-      </tr>
-      <tr>
-        <td>2025.11</td>
-        <td><strong>IT 캡스톤디자인 경진대회</strong></td>
-        <td>조선대학교</td>
-        <td class="award-rank-silver">은상(IT융합대학장상)</td>
-        <td>--</td>
       </tr>
     </tbody>
   </table>
@@ -684,7 +666,7 @@ footer a { color: #2563eb; text-decoration: none; }
     <div class="pub-authors">정지성 · IDP Lab (Intelligent Data Processing)</div>
     <div class="pub-venue">KCI — 게재 학술지: 한국차세대컴퓨팅학회 <span class="pub-badge">1저자</span></div>
     <div style="margin-top:6px;">
-      <a href="https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART003078589" target="_blank" style="color:#2563eb;font-size:12.5px;text-decoration:none;">[KCI 논문 원문 보기]</a>
+      <a href="https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART003078589" target="_blank" style="color:#0d4a8f;font-size:12.5px;text-decoration:none;">[KCI 논문 원문 보기]</a>
     </div>
   </div>
 </section>
@@ -699,11 +681,11 @@ footer a { color: #2563eb; text-decoration: none; }
     <tr>
       <td class="cat" rowspan="2">LANGUAGES</td>
       <td class="tech">Python</td>
-      <td class="desc">딥러닝 모델 학습, LLM 연동, FastAPI 서버 개발 등 대부분의 프로젝트 수행 &nbsp;<span style="color:#9ca3af;font-size:11px;">--%</span></td>
+      <td class="desc">딥러닝 모델 학습, LLM 연동, FastAPI 서버 개발 등 대부분의 프로젝트 수행</td>
     </tr>
     <tr>
       <td class="tech">C++</td>
-      <td class="desc">알고리즘 문제 해결, SSAFY Embedded Robot 트랙 개발 &nbsp;<span style="color:#2563eb;font-size:11px;font-weight:700;">A형</span> &nbsp;<span style="color:#9ca3af;font-size:11px;">--%</span></td>
+      <td class="desc">알고리즘 문제 해결, SSAFY Embedded Robot 트랙 개발 &nbsp;<span style="color:#0d4a8f;font-size:11px;font-weight:700;">A형</span></td>
     </tr>
     <tr>
       <td class="cat" rowspan="4">FRAMEWORK</td>
@@ -760,21 +742,21 @@ footer a { color: #2563eb; text-decoration: none; }
       <tr>
         <td class="num">1</td>
         <td class="pname">동남권 이노베이션 해커톤 <br>— RunWave</td>
-        <td>부산 AI 러닝 코스 추천 플랫폼 (대상)</td>
+        <td>공공데이터·LLM 연동 러닝 코스 추천 서비스 (대상)</td>
         <td>AI/백엔드 개발</td>
         <td>2025.11</td>
       </tr>
       <tr>
         <td class="num">2</td>
         <td class="pname">SUMTECH 해커톤 <br>— 요즘어때</td>
-        <td>RAG 기반 AI 건강 상담 플랫폼 (대상)</td>
+        <td>Elasticsearch RAG 파이프라인 기반 AI 건강 상담 서비스 (대상)</td>
         <td>AI 모델/백엔드 개발</td>
         <td>2025.10</td>
       </tr>
       <tr>
         <td class="num">3</td>
         <td class="pname">호남권 LLM 해커톤 <br>— nailclova</td>
-        <td>HyperCLOVA X 기반 스마트 일정 관리 (최우수상)</td>
+        <td>HyperCLOVA X 일정 관리 · Node/FastAPI 이중 서버 설계 (최우수상)</td>
         <td>AI/백엔드 개발</td>
         <td>2025.08</td>
       </tr>
@@ -890,7 +872,7 @@ footer a { color: #2563eb; text-decoration: none; }
         7,500개+ 의료 QA 데이터를 Elasticsearch로 인덱싱한 RAG 파이프라인과
         10개 주요 질환 분류를 위해 직접 Fine-tuning한 GPT-4.1 mini를 결합하여
         신뢰할 수 있는 AI 건강 상담 서비스를 구현했습니다.
-        증상 기반 상담, 미술 치료 감정 분석, 건강 지표 분석, 게이미피케이션 헬스 코칭을 제공합니다.
+        증상 기반 상담, 미술 치료 감정 분석, 건강 지표 분석 기능을 제공하며, 전체 서비스는 Docker Compose로 통합해 Nginx·Linux 환경에서 운영했습니다.
       </div>
       <div class="stack-row">
         <span class="stack-label">Stack</span>
