@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NightinGALE | 정지성 Portfolio</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav class="nav" aria-label="주요 메뉴">
+  <div class="wrap">
+    <a class="brand" href="../index.html#about">정지성</a>
+    <ul><li><a href="../index.html#about">About</a></li><li><a href="../index.html#skills">Skills</a></li><li><a href="../index.html#projects">Projects</a></li></ul>
+  </div>
+</nav>
+
+<main class="wrap">
+  <a class="back" href="../index.html#projects">← 프로젝트 목록으로 돌아가기</a>
+  <header class="detail-head">
+    <p class="eyebrow">Project Detail</p>
+    <h1>NightinGALE</h1>
+    <p class="sub">환자복 센서 태그로 낙상 의심을 알리고 병동 위치를 추적하는 스마트 요양병원 시스템</p>
+    <div class="meta-box">
+      <div><span>개발 기간</span><strong>2026.10 - 진행 중</strong></div>
+      <div><span>개발 인원</span><strong>SSAFY 자율 프로젝트 (7인)</strong></div>
+      <div><span>담당 역할</span><strong>낙상 데이터 · 모델 · 위치 서버</strong></div>
+    </div>
+  </header>
+
+  <div class="hero-media pad">
+    <p class="flow-title">낙상 의심 모델</p>
+    <div class="flow">
+      <div class="step mine"><b>원천 데이터</b>공개 HAR-UP · UMAFall + 자체 수집</div><div class="arrow">→</div>
+      <div class="step mine"><b>공통 전처리</b>오류 구간 제거 · 20Hz · ±8g · 제외 사유 기록</div><div class="arrow">→</div>
+      <div class="step mine"><b>2초 창 · 라벨</b>0.2초 간격 · 양성 / 무시 / 음성</div><div class="arrow">→</div>
+      <div class="step mine"><b>모델 비교</b>같은 분할 · 같은 지표</div><div class="arrow">→</div>
+      <div class="step mine"><b>추론 서버</b>FastAPI <code>/v1/score</code></div><div class="arrow">→</div>
+      <div class="step"><b>판정 · 알림</b>2창 연속 · 간호사 화면</div>
+    </div>
+    <p class="flow-title" style="margin-top:24px">UWB 위치</p>
+    <div class="flow">
+      <div class="step"><b>앵커 측거</b>앵커 3개 ↔ 환자 태그</div><div class="arrow">→</div>
+      <div class="step mine"><b>거리 발행</b>MQTT <code>nightingale/ranges</code></div><div class="arrow">→</div>
+      <div class="step mine"><b>Python 위치 서버</b>0.5초 tick · 중앙값 · 벽 통과 금지</div><div class="arrow">→</div>
+      <div class="step"><b>위치 표시</b>병동 웹 · 간호사 앱</div>
+    </div>
+    <p class="flow-legend">진한 테두리: 직접 구현한 단계 · 판정 · 알림 화면과 삼변측량 · 칼만 필터는 팀원 코드</p>
+  </div>
+
+  <div class="detail-grid">
+    <ul class="toc">
+      <li><a href="#overview">프로젝트 개요</a></li>
+      <li><a href="#stack">담당 기술</a></li>
+      <li><a href="#role">담당 기능</a></li>
+      <li><a href="#ts">트러블슈팅</a></li>
+      <li><a href="#retro">회고</a></li>
+    </ul>
+    <div class="content">
+      <section id="overview">
+        <h2>프로젝트 개요</h2>
+        <div class="lede">
+          <p>환자복 가슴에 단 태그의 가속도로 <span class="mark">낙상 의심 점수</span>를 0.2초마다 계산해 간호사에게 알리고, 병동 앵커와 UWB 거리 측정으로 환자 위치를 보여 주는 요양병원 시스템입니다.</p>
+          <p>7명 중 낙상 의심 AI의 데이터 · 모델 파트를 맡아 공개 데이터 전처리부터 수집 기준, 검증 설계, 추론 서버 연계까지 진행했고, 이후 UWB 거리를 받아 위치를 계산하는 Python 서버를 맡았습니다.</p>
+        </div>
+        <div class="stats">
+          <div><b>1.00건/h</b><span>재현율 95% 기준 오경보 (MiniRocket)</span></div>
+          <div><b>36명</b><span>피험자 단위 10-fold 검증</span></div>
+          <div><b>47.5 → 22초</b><span>앵커 누락 시 위치 최장 멈춤</span></div>
+        </div>
+        <p class="callout">모델은 "낙상 의심"까지만 표시하고 낙상 확률이나 의료적 위험도로 해석하지 않도록 범위를 정했습니다. 자체 수집 데이터는 아직 참가자 2명 규모라, 성능 수치는 공개 데이터 기준입니다.</p>
+      </section>
+
+      <section id="stack">
+        <h2>담당 기술</h2>
+        <table class="tech">
+          <tr><th>영역</th><th>사용 기술</th></tr>
+          <tr><td>데이터 처리</td><td>Python 3.12 · pandas · NumPy · pyarrow(parquet) · uv</td></tr>
+          <tr><td>모델</td><td>scikit-learn(Random Forest) · aeon(MiniRocket) · PyTorch(1D CNN · TCN) · harnet5 파인튜닝</td></tr>
+          <tr><td>서빙 · 배포</td><td>FastAPI · Pydantic · Docker · Docker Compose · Nginx</td></tr>
+          <tr><td>위치 서버</td><td>Python · paho-mqtt · Mosquitto · pytest · GitLab CI</td></tr>
+          <tr><td>백엔드 연계</td><td>Java Spring(JdbcTemplate) · JUnit</td></tr>
+          <tr><td>설계 · 협업</td><td>PostgreSQL ERD · DDL 초안 · GitLab 머지 요청 · Jira</td></tr>
+        </table>
+      </section>
+
+      <section id="role">
+        <h2>담당 기능</h2>
+        <ul class="features">
+          <li><b>공개 데이터 통합 전처리</b> - 센서 위치 · 기록 방식이 다른 두 데이터를 하나의 형식으로, 제외 사유는 열로 기록</li>
+          <li><b>자체 데이터 수집 기준</b> - 참가자 · 세션 기록 양식, 라벨 정의, 안전 · 동의 · 가명 ID 기준</li>
+          <li><b>모델 비교 · 검증 설계</b> - 규칙 기준선과 후보 모델을 같은 분할 · 같은 지표로 비교</li>
+          <li><b>추론 서버 연계</b> - 백엔드 DTO에 맞춘 API, Docker 이미지, 운영 Compose 서비스 추가</li>
+          <li><b>UWB 위치 서버</b> - 데이터 계약 문서, MQTT 발행, 위치 계산 서비스, 실측 재생 시험, CI 검사 단계</li>
+          <li><b>DB 설계 초안</b> - 17개 테이블 ERD · DDL 초안과 결정 필요 항목 10개 정리(실제 마이그레이션은 팀원 작성)</li>
+        </ul>
+      </section>
+
+      <section id="ts">
+        <h2>트러블슈팅</h2>
+
+        <article class="ts">
+          <h3>① 정확도가 의미 없는 데이터: 시간당 오경보 4.84건 → 1.00건</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>2초 창으로 자르면 낙상 구간은 전체의 약 3%뿐이라, 모두 "정상"이라고 답해도 정확도가 97%가 됩니다. 같은 사람의 데이터가 학습과 평가에 함께 들어가면 점수도 부풀려집니다.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>현장에 필요한 것은 "낙상을 놓치지 않으면서 간호사를 얼마나 덜 부르는가"인데, 창 단위 정확도는 이것을 보여 주지 못했습니다.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>피험자 36명 기준 <b>GroupKFold 10-fold</b>로 사람 단위로 나누고, 지표를 <b>사건 단위 재현율과 시간당 오경보(FA/h)</b>로 바꿨습니다. 같은 재현율 95%에 임계값을 맞춰 후보를 비교하고 피험자 부트스트랩 95% 신뢰구간을 붙였습니다.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>Random Forest 4.84건/h [2.03, 8.54] 대비 <b>MiniRocket 1.00건/h [0.19, 2.03]</b>. 차이 -3.87 [-6.98, -1.50]으로 신뢰구간이 0을 넘지 않았습니다.</p></div>
+          <div class="ts-panel">
+            <p class="t">재현율 95% 기준 시간당 오경보 (공개 데이터 · 가슴 위치 · 낙상 457건 · 일상 5.99시간)</p>
+            <div class="bar-row"><span>Random Forest</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="v">4.84</span></div>
+            <div class="bar-row"><span>1D CNN</span><div class="bar-track"><div class="bar-fill" style="width:43.6%"></div></div><span class="v">2.11</span></div>
+            <div class="bar-row"><span>TCN</span><div class="bar-track"><div class="bar-fill" style="width:39.0%"></div></div><span class="v">1.89</span></div>
+            <div class="bar-row"><span>RF + CNN</span><div class="bar-track"><div class="bar-fill" style="width:35.5%"></div></div><span class="v">1.72</span></div>
+            <div class="bar-row hl"><span>MiniRocket</span><div class="bar-track"><div class="bar-fill" style="width:20.7%"></div></div><span class="v">1.00</span></div>
+            <p class="n">규칙 기준선은 점수가 0/1이라 재현율을 맞출 수 없어 제외(자체 운영점: 재현율 61%, 7.18건/h). 몸에 고정한 센서로 연출한 공개 데이터 결과라 환자복 성능이 아니며, 최종 모델 선택에는 쓰지 않았습니다.</p>
+          </div>
+        </article>
+
+        <article class="ts">
+          <h3>② 파일럿에서 드러난 수집 설계 문제: 세션 구성 재설계</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>첫 파일럿 세션에 공개 데이터로 학습한 모델을 그대로 적용하자 낙상 14건 중 0~2건만 감지됐습니다.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>3분 동안 낙상을 14번 해서 일상 구간이 부족했고(오경보율 해상도 40건/h), 낙상 간격이 10초라 5초 묶기 규칙에 오경보가 가려졌으며, 환자복 착용 낙상의 충격(1.1~1.9g)이 일상 동작 최댓값(1.53g)과 겹쳤습니다.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>세션을 <b>일상 20~30분 · 낙상 10~15분(간격 30초 이상)</b> · 태그 취급 · 생활 착용으로 나누고, 관찰자 키 표시를 더했습니다. 충격이 1.5g 미만이면 관찰자가 누른 시각을 기준으로 라벨을 잡는 규칙을 만들었습니다.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>수정한 절차와 근거를 수집 문서에 반영해 다음 수집부터 적용했습니다. 서빙 임계값을 0.5에서 0.9로 올릴 때도 "오경보는 줄고 놓침은 늘 수 있는 임시값"이라는 판단 근거를 커밋에 남겼습니다.</p></div>
+        </article>
+
+        <article class="ts">
+          <h3>③ 앵커 하나가 빠지면 위치가 멈추는 문제: 최장 멈춤 47.5초 → 22초</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>병실 문 바로 밖에서 앵커 하나의 거리 측정이 모두 실패하자 환자 위치가 48초 동안 멈췄습니다.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>위치 계산이 앵커 3개의 거리가 모두 있을 때만 동작해, 하나라도 빠지면 마지막 위치에 머물렀습니다.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>거리가 2개만 있으면 <b>두 원의 교점 중 직전 위치에 가까운 쪽</b>을 쓰고(벽 통과 금지, 도면 안으로 제한, degraded 표시), 내보내는 위치는 최근 3개 값의 중앙값으로 바꿨습니다.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>같은 날 실측 기록 재생에서 최장 멈춤 47.5초 → 22초, 위치 미확인 35회 → 0회, 1m 넘는 튐 68회 → 43회. 같은 기록에 맞춘 규칙을 같은 기록으로 재생한 값이라 일반화 성능은 아닙니다.</p></div>
+        </article>
+      </section>
+
+      <section id="retro">
+        <h2>회고</h2>
+        <p>가장 오래 고민한 것은 모델 구조가 아니라 <b>"이 숫자를 성능이라고 불러도 되는가"</b>였습니다. 자체 수집 세션을 재생해 14건 중 14건을 잡았을 때도, 그 세션이 학습에 쓰였기 때문에 성능이 아니라 동작 확인이라고 문서에 따로 적었습니다.</p>
+        <p>위치 표시를 부드럽게 하는 안정화 기능을 만들었지만, 보정 없는 위치와 나란히 비교해 보니 출발이 1.5~2.5초 늦어 기본값을 껐습니다. <span class="mark">만든 기능이라도 현장에서 더 나은지 확인한 뒤에 켜야 한다</span>는 것을 배웠습니다.</p>
+        <p>남은 과제는 참가자를 늘려 사람 단위로 다시 평가하는 것과, 백엔드와 추론 서버를 잇는 종단 시험입니다.</p>
+      </section>
+    </div>
+  </div>
+
+  <a class="next" href="naeil-clova.html"><div><span>다음 프로젝트</span><b>Naeil Clova</b></div><span class="arr">→</span></a>
+</main>
+
+<footer><div class="wrap"><span>© 2026 정지성. All rights reserved.</span><a href="mailto:wjdwltjd324800@gmail.com">wjdwltjd324800@gmail.com</a></div></footer>
+</body>
+</html>
