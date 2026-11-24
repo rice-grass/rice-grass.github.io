@@ -53,6 +53,7 @@
   <div class="detail-grid">
     <ul class="toc">
       <li><a href="#overview">프로젝트 개요</a></li>
+      <li><a href="#arch">시스템 아키텍처</a></li>
       <li><a href="#robot">로봇 · 시연</a></li>
       <li><a href="#data">학습 데이터</a></li>
       <li><a href="#results">탐지 모델 결과</a></li>
@@ -74,6 +75,21 @@
           <div><b>146장</b><span>모형 관로 세그멘테이션 데이터</span></div>
           <div><b>우수상</b><span>SSAFY 공통 프로젝트</span></div>
         </div>
+      </section>
+
+      <section id="arch">
+        <h2>시스템 아키텍처</h2>
+        <div class="shots one">
+          <figure><img src="../assets/pipe-arch.webp" alt="PIPE CHECK 시스템 아키텍처: GitLab · Jenkins · NGINX · Docker Compose(FastAPI · MongoDB) 클라우드, 공공데이터, AI 서버, 라즈베리파이 로봇" loading="lazy"><figcaption>시스템 아키텍처 (팀 발표자료)</figcaption></figure>
+        </div>
+        <ul class="features" style="margin-top:20px">
+          <li><b>배포</b> - GitLab develop 브랜치 push → EC2 Jenkins 빌드 → Docker Compose(FastAPI · MongoDB · 대시보드) 배포, NGINX 리버스 프록시</li>
+          <li><b>대시보드</b> - React 관제 화면, 우선순위 지도 · 실시간 관로 영상 · 결함 통계 · 보고서 · 3D 뷰어 제공</li>
+          <li><b>데이터</b> - 공공데이터포털 · 국토교통부(VWorld 지도) · Kakao(주소 → 좌표) 데이터를 우선순위 엔진이 모아 MongoDB에 적재, AI Hub 하수관 CCTV 이미지는 결함 탐지 모델 학습에 사용</li>
+          <li><b>AI 서버</b> - 노트북 GPU에서 YOLO26n-seg 결함 탐지 · Depth Anything V2 자유공간 분석 · GPT 계열 VL 주행 판단 · Qwen-VL 진행 요약과 보고서 생성, 결과는 Cloud API로 전송</li>
+          <li><b>라즈베리파이</b> - 카메라 · MPU6050 · HC-SR04 센서 값을 AI 서버에 전달, 안전 검증을 통과한 모터 명령만 실행(명령 TTL · 통신 단절 시 자동 정지)</li>
+          <li><b>3D 복원</b> - 주행 영상을 Gsplat으로 오프라인 학습해 대시보드 3D 뷰어에 제공</li>
+        </ul>
       </section>
 
       <section id="robot">
