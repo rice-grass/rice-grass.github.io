@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ECG 운전자 식별 연구 | 정지성 Portfolio</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="../assets/style.css?v=20261110b">
+<link rel="stylesheet" href="../assets/style.css?v=20261124d">
 </head>
 <body>
 <nav class="nav" aria-label="주요 메뉴">
@@ -28,10 +28,20 @@
     </div>
   </header>
 
-  <figure class="hero-media pad" style="margin-top:40px">
-    <img src="../assets/ecg-cover.webp" style="max-width:860px;margin:0 auto" alt="운전자 보조 시스템, 심전도 생체인식, 전처리와 분할, 제안 모델로 이어지는 식별 시스템 흐름도">
-    <figcaption style="text-align:center;font-size:13px;color:var(--muted);margin-top:12px">운전자 식별 시스템 흐름도: 운전자 보조 시스템(ADAS) → 심전도 생체인식 → 전처리 · 분할 → 제안 모델 (논문 그림 1)</figcaption>
-  </figure>
+  <div class="hero-media" style="background:#fff;padding:48px 24px"><img src="../assets/ecg-kingc.webp" style="max-width:640px;margin:0 auto" alt="한국차세대컴퓨팅학회 (Korean Institute of Next Generation Computing) 로고"></div>
+
+  <div class="hero-media pad">
+    <p class="flow-title">운전자 식별 파이프라인</p>
+    <div class="flow">
+      <div class="step mine"><b>공개 데이터</b>drivedb 6명 · NSRDB 18명</div><div class="arrow">→</div>
+      <div class="step mine"><b>잡음 제거</b>노치 · 고역 · 대역 · 이동평균 필터</div><div class="arrow">→</div>
+      <div class="step mine"><b>R파 검출</b>Pan-Tompkins</div><div class="arrow">→</div>
+      <div class="step mine"><b>분할</b>R파 기준 1~5주기 · 고정 0.7~2.1초</div><div class="arrow">→</div>
+      <div class="step mine"><b>STFT</b>시간-주파수 특징</div><div class="arrow">→</div>
+      <div class="step mine"><b>TCN-BiLSTM</b>Residual block 결합 · 운전자 분류</div>
+    </div>
+    <p class="flow-legend">전 과정 직접 설계 · 구현 (MATLAB R2023a)</p>
+  </div>
 
   <div class="detail-grid">
     <ul class="toc">
@@ -40,9 +50,9 @@
       <li><a href="#data">데이터</a></li>
       <li><a href="#pipeline">전처리 · 분할</a></li>
       <li><a href="#model">모델 구조</a></li>
+      <li><a href="#results">비교 결과</a></li>
       <li><a href="#stack">담당 기술</a></li>
       <li><a href="#ts">트러블슈팅</a></li>
-      <li><a href="#results">비교 결과</a></li>
       <li><a href="#retro">회고</a></li>
     </ul>
     <div class="content">
@@ -56,6 +66,9 @@
           <div><b>99.76%</b><span>drivedb 식별 정확도 (6명, 3주기 입력)</span></div>
           <div><b>99.97%</b><span>NSRDB 식별 정확도 (18명, 3주기 입력)</span></div>
           <div><b>F1 1.0000</b><span>NSRDB · 3주기 입력</span></div>
+        </div>
+        <div class="shots one" style="margin-top:24px">
+          <figure><img src="../assets/ecg-cover.webp" alt="운전자 보조 시스템, 심전도 생체인식, 전처리와 분할, 제안 모델로 이어지는 식별 시스템 흐름도" loading="lazy" style="max-width:760px;margin:0 auto"><figcaption>운전자 식별 시스템 흐름도: 운전자 보조 시스템(ADAS) → 심전도 생체인식 → 전처리 · 분할 → 제안 모델 (논문 그림 1)</figcaption></figure>
         </div>
       </section>
 
@@ -101,16 +114,16 @@
           <li><b>대역통과 필터</b> - QRS 파형 주변의 잡음 제거</li>
           <li><b>이동평균 필터</b> - 남은 미세 잡음 제거</li>
         </ul>
+        <div class="shots one" style="margin:16px 0 24px">
+          <figure><img src="../assets/ecg-fig2.webp" alt="필터링 전 원본 신호와 필터링 후 신호 비교 그래프" loading="lazy" style="max-width:520px;margin:0 auto"><figcaption>필터링 전(위)과 후(아래) 신호 (논문 그림 2)</figcaption></figure>
+        </div>
         <p><b>2. R파 검출</b> - Pan-Tompkins 알고리즘으로 각 심박의 R파 정점을 찾아 분할의 기준점으로 삼았음.</p>
         <p><b>3. 분할</b> - 두 가지 방식을 모두 만들었음. 기준점 분할은 R파 정점을 기준으로 1~5주기씩 자르고 정규화하며, 비기준점 분할은 0.7 · 1.4 · 2.1초의 고정 길이로 자름.</p>
+        <div class="shots ratio-pair" style="margin:16px 0 24px">
+          <figure><img src="../assets/ecg-fig3.webp" alt="R파 기준으로 1, 2, 3주기씩 자른 심전도" loading="lazy"><figcaption>R파 기준 분할: 1 · 2 · 3주기 (논문 그림 3)</figcaption></figure>
+          <figure><img src="../assets/ecg-1.webp" alt="0.7초, 1.4초, 2.1초 고정 길이로 자른 심전도" loading="lazy"><figcaption>고정 길이 분할: 0.7 · 1.4 · 2.1초 (논문 그림 4)</figcaption></figure>
+        </div>
         <p><b>4. STFT</b> - 분할한 신호를 짧은 구간 단위로 푸리에 변환해 시간에 따라 변하는 주파수 특성을 표현함.</p>
-        <div class="shots" style="margin-top:20px">
-          <figure><img src="../assets/ecg-fig2.webp" alt="필터링 전 원본 신호와 필터링 후 신호 비교 그래프" loading="lazy"><figcaption>필터링 전(위)과 후(아래) 신호 (논문 그림 2)</figcaption></figure>
-          <figure><img src="../assets/ecg-fig3.webp" alt="R파 기준으로 1, 2, 3주기씩 자른 심전도" loading="lazy"><figcaption>기준점 분할: 1 · 2 · 3주기 (논문 그림 3)</figcaption></figure>
-        </div>
-        <div class="shots one" style="margin-top:16px">
-          <figure><img src="../assets/ecg-1.webp" alt="0.7초, 1.4초, 2.1초 고정 길이로 자른 심전도" loading="lazy" style="max-width:520px;margin:0 auto"><figcaption>비기준점 분할: 0.7 · 1.4 · 2.1초 (논문 그림 4)</figcaption></figure>
-        </div>
       </section>
 
       <section id="model">
@@ -124,6 +137,20 @@
         <div class="shots one" style="margin-top:20px">
           <figure><img src="../assets/ecg-2.webp" alt="TCN과 BiLSTM 경로를 잔차로 합치는 Residual block 구조도" loading="lazy"><figcaption>Residual block 구조: 오른쪽 TCN 경로와 왼쪽 BiLSTM 경로의 출력을 더함 (논문 그림 5(a))</figcaption></figure>
         </div>
+      </section>
+
+      <section id="results">
+        <h2>비교 결과</h2>
+        <div class="ts-panel" style="margin-top:0;margin-bottom:20px">
+          <p class="t">분할 방식별 정확도: 제안 모델 · LSTM · CNN (drivedb · 논문 그림 6 · 7)</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px"><svg viewBox="0 0 340 250" width="100%" role="img" aria-label="R파 기준 분할 정확도" font-family="Pretendard Variable, Pretendard, system-ui, sans-serif"><text x="0" y="16" font-size="14" font-weight="700" fill="#111111">R파 기준 분할</text><text x="0" y="34" font-size="12" fill="#6b6b6b">입력 주기 수별 · drivedb</text><line x1="36" x2="276" y1="220.0" y2="220.0" stroke="#e7e5e1"/><text x="30" y="224.0" font-size="11" fill="#6b6b6b" text-anchor="end">80%</text><line x1="36" x2="276" y1="177.5" y2="177.5" stroke="#e7e5e1"/><text x="30" y="181.5" font-size="11" fill="#6b6b6b" text-anchor="end">85%</text><line x1="36" x2="276" y1="135.0" y2="135.0" stroke="#e7e5e1"/><text x="30" y="139.0" font-size="11" fill="#6b6b6b" text-anchor="end">90%</text><line x1="36" x2="276" y1="92.5" y2="92.5" stroke="#e7e5e1"/><text x="30" y="96.5" font-size="11" fill="#6b6b6b" text-anchor="end">95%</text><line x1="36" x2="276" y1="50.0" y2="50.0" stroke="#e7e5e1"/><text x="30" y="54.0" font-size="11" fill="#6b6b6b" text-anchor="end">100%</text><text x="60.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">1주기</text><text x="108.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">2주기</text><text x="156.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">3주기</text><text x="204.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">4주기</text><text x="252.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">5주기</text><polyline points="60.0,149.4 108.0,122.5 156.0,155.6 204.0,152.4 252.0,179.4" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="60.0" cy="149.4" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 1주기 · 88.31%</title></circle><circle cx="108.0" cy="122.5" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 2주기 · 91.47%</title></circle><circle cx="156.0" cy="155.6" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 3주기 · 87.58%</title></circle><circle cx="204.0" cy="152.4" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 4주기 · 87.95%</title></circle><circle cx="252.0" cy="179.4" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 5주기 · 84.78%</title></circle><polyline points="60.0,125.7 108.0,99.0 156.0,134.9 204.0,126.9 252.0,138.7" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="60.0" cy="125.7" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 1주기 · 91.09%</title></circle><circle cx="108.0" cy="99.0" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 2주기 · 94.23%</title></circle><circle cx="156.0" cy="134.9" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 3주기 · 90.01%</title></circle><circle cx="204.0" cy="126.9" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 4주기 · 90.95%</title></circle><circle cx="252.0" cy="138.7" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 5주기 · 89.57%</title></circle><polyline points="60.0,71.2 108.0,54.7 156.0,52.0 204.0,52.5 252.0,72.9" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="60.0" cy="71.2" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 1주기 · 97.51%</title></circle><circle cx="108.0" cy="54.7" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 2주기 · 99.45%</title></circle><circle cx="156.0" cy="52.0" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 3주기 · 99.76%</title></circle><circle cx="204.0" cy="52.5" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 4주기 · 99.71%</title></circle><circle cx="252.0" cy="72.9" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 5주기 · 97.31%</title></circle><text x="262.0" y="76.9" font-size="11.5" font-weight="700" fill="#111111">제안 모델</text><text x="262.0" y="142.7" font-size="11.5" font-weight="700" fill="#111111">LSTM</text><text x="262.0" y="183.4" font-size="11.5" font-weight="700" fill="#111111">CNN</text><text x="156.0" y="42.0" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">99.76%</text></svg><svg viewBox="0 0 340 250" width="100%" role="img" aria-label="고정 길이 분할 정확도" font-family="Pretendard Variable, Pretendard, system-ui, sans-serif"><text x="0" y="16" font-size="14" font-weight="700" fill="#111111">고정 길이 분할</text><text x="0" y="34" font-size="12" fill="#6b6b6b">분할 길이별 · drivedb</text><line x1="36" x2="276" y1="220.0" y2="220.0" stroke="#e7e5e1"/><text x="30" y="224.0" font-size="11" fill="#6b6b6b" text-anchor="end">80%</text><line x1="36" x2="276" y1="177.5" y2="177.5" stroke="#e7e5e1"/><text x="30" y="181.5" font-size="11" fill="#6b6b6b" text-anchor="end">85%</text><line x1="36" x2="276" y1="135.0" y2="135.0" stroke="#e7e5e1"/><text x="30" y="139.0" font-size="11" fill="#6b6b6b" text-anchor="end">90%</text><line x1="36" x2="276" y1="92.5" y2="92.5" stroke="#e7e5e1"/><text x="30" y="96.5" font-size="11" fill="#6b6b6b" text-anchor="end">95%</text><line x1="36" x2="276" y1="50.0" y2="50.0" stroke="#e7e5e1"/><text x="30" y="54.0" font-size="11" fill="#6b6b6b" text-anchor="end">100%</text><text x="76.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">0.7초</text><text x="156.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">1.4초</text><text x="236.0" y="240" font-size="11" fill="#6b6b6b" text-anchor="middle">2.1초</text><polyline points="76.0,159.1 156.0,136.1 236.0,161.3" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="76.0" cy="159.1" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 0.7초 · 87.16%</title></circle><circle cx="156.0" cy="136.1" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 1.4초 · 89.87%</title></circle><circle cx="236.0" cy="161.3" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2"><title>CNN · 2.1초 · 86.91%</title></circle><polyline points="76.0,136.9 156.0,158.5 236.0,193.6" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="76.0" cy="136.9" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 0.7초 · 89.78%</title></circle><circle cx="156.0" cy="158.5" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 1.4초 · 87.23%</title></circle><circle cx="236.0" cy="193.6" r="4.5" fill="#1baf7a" stroke="#fff" stroke-width="2"><title>LSTM · 2.1초 · 83.11%</title></circle><polyline points="76.0,71.0 156.0,91.0 236.0,103.9" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="76.0" cy="71.0" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 0.7초 · 97.53%</title></circle><circle cx="156.0" cy="91.0" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 1.4초 · 95.18%</title></circle><circle cx="236.0" cy="103.9" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2"><title>제안 모델 · 2.1초 · 93.66%</title></circle><text x="246.0" y="107.9" font-size="11.5" font-weight="700" fill="#111111">제안 모델</text><text x="246.0" y="165.3" font-size="11.5" font-weight="700" fill="#111111">CNN</text><text x="246.0" y="197.6" font-size="11.5" font-weight="700" fill="#111111">LSTM</text><text x="76.0" y="61.0" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">97.53%</text></svg></div>
+          <p class="n">세로축은 80~100%. 점에 마우스를 올리면 값 표시. R파 기준 분할은 3주기에서 정점(99.76%), 고정 길이 분할은 길어질수록 하락. 모든 조건에서 제안 모델이 가장 높음.</p>
+        </div>
+        <table class="tech">
+          <tr><th>데이터</th><th>결과 (R파 기준 · 3주기 입력)</th></tr>
+          <tr><td>drivedb</td><td>제안 모델 99.76% · TCN 95.13% · LSTM 90.01% · CNN 87.58% (그림 6 수치표 기준)</td></tr>
+          <tr><td>NSRDB</td><td>제안 모델 99.97% · F1 1.0000 · TCN 96.13% · 기존 최고 Pyun et al. 99.93% · F1 0.9993</td></tr>
+        </table>
       </section>
 
       <section id="stack">
@@ -187,15 +214,6 @@
             <p class="n">범례: CNN_BiLSTM · CNN_LSTM · TCN · TCN-CNN · 제안 모델(TCN-BiLSTM)</p>
           </div>
         </article>
-      </section>
-
-      <section id="results">
-        <h2>비교 결과</h2>
-        <table class="tech">
-          <tr><th>데이터</th><th>결과 (R파 기준 · 3주기 입력)</th></tr>
-          <tr><td>drivedb</td><td>제안 모델 99.76% · TCN 95.13% · LSTM 90.01% · CNN 87.58% (그림 6 수치표 기준)</td></tr>
-          <tr><td>NSRDB</td><td>제안 모델 99.97% · F1 1.0000 · TCN 96.13% · 기존 최고 Pyun et al. 99.93% · F1 0.9993</td></tr>
-        </table>
       </section>
 
       <section id="retro">

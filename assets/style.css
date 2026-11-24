@@ -228,6 +228,8 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .hw figcaption p { margin: 0; font-size: 13px; color: var(--text-2); line-height: 1.65; }
 .hw figcaption p + p { margin-top: 6px; color: var(--muted); }
 .tech.cmp td:first-child { width: 110px; }
+.tech.auto1 td:first-child { width: auto; }
+.shots.ratio-pair { grid-template-columns: 1.02fr 1.28fr; align-items: start; }
 
 @media (max-width: 860px) {
   .hero .wrap { grid-template-columns: 1fr; gap: 32px; }
@@ -248,7 +250,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
   .stats { grid-template-columns: 1fr; }
   .stats div { border-right: 0; border-bottom: 1px solid var(--line); }
   .stats div:last-child { border-bottom: 0; }
-  .shots, .shots.three { grid-template-columns: 1fr; }
+  .shots, .shots.three, .shots.ratio-pair { grid-template-columns: 1fr; }
   .tech.cmp th, .tech.cmp td { padding: 10px 8px; font-size: 13.5px; }
   .tech.cmp td:first-child { width: 64px; }
   .ts { padding: 24px 18px; }
