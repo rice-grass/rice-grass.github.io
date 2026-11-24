@@ -182,6 +182,11 @@
           <div class="ts-row"><span class="tag p">문제</span><p>균열 모양과 면적을 보여 주려면 세그멘테이션 모델이 필요했지만, 공개 CCTV 데이터에는 결함 위치를 나타내는 박스만 있고 마스크가 없었음.</p></div>
           <div class="ts-row"><span class="tag s">해결</span><p>각 박스를 SAM 2.1 base 모델의 프롬프트로 넣어 박스 안 결함 영역을 폴리곤으로 뽑고, YOLO 세그멘테이션 형식으로 변환함. SAM은 학습하지 않고 라벨 생성에만 사용.</p></div>
           <div class="ts-row"><span class="tag r">결과</span><p>추가 라벨링 없이 YOLO11n-seg 학습 데이터를 만들었고, 검증 mask mAP50 0.26 기록. 이후 모형 관로 데이터 학습에도 같은 세그멘테이션 파이프라인 사용.</p></div>
+                  <div class="ts-panel">
+            <p class="t">SAM 2.1 의사 마스크 예시 (공개 CCTV 검증 이미지 · 노란 박스: 원래 라벨 · 빨간 영역: SAM 2.1이 만든 마스크)</p>
+            <img src="../assets/pipe-sam.webp" alt="하수관 CCTV 이미지 4장에 원래 박스와 SAM 2.1 마스크를 겹친 예시. 3장은 균열 모양을 따라가고 1장은 박스 전체를 칠함" loading="lazy" style="width:100%;border-radius:8px">
+            <p class="n">박스 안의 가는 균열과 갈라진 형태는 대부분 따라가지만(왼쪽 위 · 오른쪽 위 · 왼쪽 아래), 균열이 흐린 경우 박스 전체를 칠하는 실패도 생김(오른쪽 아래). 파란 사각형은 원본 데이터의 글자 가림 처리.</p>
+          </div>
         </article>
 
         <article class="ts">
