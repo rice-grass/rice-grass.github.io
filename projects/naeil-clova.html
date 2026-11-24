@@ -46,7 +46,7 @@
       <div class="step mine"><b>PDF RAG</b>FAISS 검색 → 문서 안에서만 답변</div><div class="arrow">→</div>
       <div class="step mine"><b>일정 챗봇</b>DB 일정 주입 · 못 찾으면 재질의</div>
     </div>
-    <p class="flow-legend">진한 테두리: 직접 구현한 AI 서버 단계. 대회 버전은 프론트가 AI 서버를 직접 호출했고, 확장 버전은 Express 하나로 진입점을 통일했습니다.</p>
+    <p class="flow-legend">진한 테두리: 직접 구현한 AI 서버 단계. 대회 버전은 프론트가 AI 서버를 직접 호출했고, 확장 버전은 Express 하나로 진입점을 통일함.</p>
   </div>
 
   <div class="detail-grid">
@@ -54,6 +54,7 @@
       <li><a href="#overview">프로젝트 개요</a></li>
       <li><a href="#problem">문제 정의</a></li>
       <li><a href="#screens">주요 화면</a></li>
+      <li><a href="#arch">시스템 아키텍처</a></li>
       <li><a href="#prompt-design">추출 프롬프트</a></li>
       <li><a href="#stack">담당 기술</a></li>
       <li><a href="#role">담당 기능</a></li>
@@ -66,8 +67,8 @@
       <section id="overview">
         <h2>프로젝트 개요</h2>
         <div class="lede">
-          <p>행사 포스터, 가정통신문, 통화 녹음, 공지 문서의 일정을 캘린더에 다시 옮겨 적는 부담을 줄이는 서비스입니다. CLOVA OCR · Speech로 입력을 텍스트로 바꾸고, <span class="mark">HyperCLOVA X가 날짜 · 시간 · 제목 · 장소를 JSON으로 구조화</span>합니다.</p>
-          <p>2025 호남권 LLM 해커톤(3일)에서 최우수상을 받았고, 같은 서비스로 K Intelligence 프롬프트 엔지니어링 해커톤에서 개발 프롬프트 설계를 발표해 본선 5위에 올랐습니다. 이후 개인 저장소에서 PDF 질의응답, 역할별 LLM 분리, DB 연계를 더했습니다.</p>
+          <p>행사 포스터, 가정통신문, 통화 녹음, 공지 문서의 일정을 캘린더에 다시 옮겨 적는 부담을 줄이는 서비스. CLOVA OCR · Speech로 입력을 텍스트로 바꾸고, <span class="mark">HyperCLOVA X가 날짜 · 시간 · 제목 · 장소를 JSON으로 구조화</span>함.</p>
+          <p>2025 호남권 LLM 해커톤(3일)에서 최우수상을 받았고, 같은 서비스로 K Intelligence 프롬프트 엔지니어링 해커톤에서 개발 프롬프트 설계를 발표해 본선 5위에 올랐음. 이후 개인 저장소에서 PDF 질의응답, 역할별 LLM 분리, DB 연계를 더함.</p>
         </div>
         <div class="stats">
           <div><b>최우수상</b><span>2025 호남권 LLM 해커톤</span></div>
@@ -78,7 +79,7 @@
 
       <section id="problem">
         <h2>문제 정의</h2>
-        <p>기존 일정 앱은 대부분 텍스트 입력에 의존합니다. 사진 · 문서 · 음성에 담긴 일정은 사람이 읽고 다시 입력해야 해서, 번거로움 때문에 등록을 미루다 일정이 누락되거나 겹치는 일이 반복됩니다.</p>
+        <p>기존 일정 앱은 대부분 텍스트 입력에 의존함. 사진 · 문서 · 음성에 담긴 일정은 사람이 읽고 다시 입력해야 해서, 번거로움 때문에 등록을 미루다 일정이 누락되거나 겹치는 일이 반복됨.</p>
         <div class="shots one" style="margin:20px 0">
           <figure><img src="../assets/clova-1.webp" alt="기존 수동 입력 일정 관리와 Naeil Clova 멀티모달 서비스 비교" loading="lazy"><figcaption>기존 서비스와의 차이: 기록 → 인식 → 생성 → 공유를 한 서비스에서 (발표자료)</figcaption></figure>
         </div>
@@ -97,9 +98,22 @@
         </div>
       </section>
 
+      <section id="arch">
+        <h2>시스템 아키텍처</h2>
+        <div class="shots one">
+          <figure><img src="../assets/clova-arch.webp" alt="Naeil Clova 시스템 아키텍처: Node.js · FastAPI · MySQL과 LangChain 챗봇 · PDF RAG · 일정 추출, NAVER Cloud CLOVA API 연동" loading="lazy"><figcaption>시스템 아키텍처 (확장 버전): Express 단일 진입점 → FastAPI AI 서버 → LangChain 3개 역할 · NAVER CLOVA API</figcaption></figure>
+        </div>
+        <ul class="features" style="margin-top:20px">
+          <li><b>진입점</b> - Express의 웹 화면 파일 제공 · JWT 쿠키 인증, <code>/py-api</code>를 통한 FastAPI 프록시, Socket.IO 기반 공동 다이어리 채팅</li>
+          <li><b>AI 서버</b> - FastAPI의 포스터 이미지 텍스트 변환(CLOVA OCR), 음성 텍스트 변환(CLOVA Speech), 답변 음성 생성(CLOVA Voice)</li>
+          <li><b>LLM 3개 역할</b> - HyperCLOVA X HCX-005 기반 챗봇(DB 일정 주입 · 못 찾으면 재질의), PDF RAG(250자 청크 · ClovaX 임베딩 · FAISS 상위 5개), 일정 추출(텍스트 → JSON 배열)</li>
+          <li><b>데이터</b> - MySQL에 일정 · OCR 결과 저장, Express는 연결 풀로 읽기 · 쓰기, FastAPI는 챗봇 맥락 구성 시 직접 조회</li>
+        </ul>
+      </section>
+
       <section id="prompt-design">
         <h2>일정 추출 프롬프트</h2>
-        <p>서비스의 핵심은 OCR · STT로 얻은 텍스트를 캘린더 필드로 바꾸는 한 번의 LLM 호출입니다. 대회 때 만든 프롬프트와 확장하며 다시 쓴 프롬프트는 설계 방향이 다릅니다.</p>
+        <p>서비스의 핵심은 OCR · STT로 얻은 텍스트를 캘린더 필드로 바꾸는 한 번의 LLM 호출. 대회 때 만든 프롬프트와 확장하며 다시 쓴 프롬프트는 설계 방향이 다름.</p>
         <table class="tech cmp">
           <tr><th>항목</th><th>대회 버전</th><th>확장 버전</th></tr>
           <tr><td>호출 방식</td><td>비서 역할 시스템 프롬프트를 대화와 공유 · 온도 0.2</td><td>추출 전용 인스턴스, 대화 기억 없이 단독 호출 · 온도 0.1</td></tr>
@@ -108,7 +122,7 @@
           <tr><td>연도</td><td>지시 없음</td><td>현재 연도를 넣고, 연도가 없으면 그 연도로</td></tr>
           <tr><td>출력 형식</td><td>예시 JSON 1개 제시</td><td>"JSON 배열만, 설명 · 마크다운 금지"</td></tr>
         </table>
-        <p class="callout">확장 버전은 연도 누락과 출력 형식 문제를 줄이는 쪽으로 바꿨지만, 대회 때 효과를 봤던 장소 규칙은 짧아졌습니다. 어느 쪽이 더 정확한지는 아직 측정하지 않았고, 비교를 위해 입력 유형별 평가 세트 22개(포스터 · 음성 · 여러 일정 · 일정 없음 · 상대 날짜)와 실행 스크립트를 만들어 두었습니다.</p>
+        <p class="callout">확장 버전은 연도 누락과 출력 형식 문제를 줄이는 쪽으로 바꿨지만, 대회 때 효과를 봤던 장소 규칙은 짧아졌음. 어느 쪽이 더 정확한지는 아직 측정하지 않았고, 비교를 위해 입력 유형별 평가 세트 22개(포스터 · 음성 · 여러 일정 · 일정 없음 · 상대 날짜)와 실행 스크립트를 만들어 두었음.</p>
       </section>
 
       <section id="stack">
@@ -138,10 +152,10 @@
 
         <article class="ts">
           <h3>① 주최 기관이 장소로 들어가는 문제: 모르면 null로 남기는 규칙</h3>
-          <div class="ts-row"><span class="tag p">문제</span><p>행사 포스터에는 주최 · 주관 · 후원 기관과 실제 장소가 함께 적혀 있고, 장소가 아예 없는 경우도 있습니다. 기관명이 장소 칸에 들어가면 캘린더에 잘못된 장소가 등록됩니다.</p></div>
-          <div class="ts-row"><span class="tag c">원인</span><p>장소 필드만 정의하면 기관명과 실제 장소를 구분할 기준도, 장소가 없을 때의 처리 규칙도 없습니다.</p></div>
-          <div class="ts-row"><span class="tag s">해결</span><p>추출 프롬프트에 두 가지 규칙을 넣었습니다. "주최 · 주관 · 후원 · 예매처 · 기관명은 장소가 아니며 location은 null, 기관 정보는 notes에 기록", "장소가 애매하면 절대 추정하지 말고 null". 출력은 JSON 배열로 받도록 했습니다.</p></div>
-          <div class="ts-row"><span class="tag r">결과</span><p>기관명을 장소로 채우는 대신 <b>장소는 null, 기관 정보는 메모</b>로 나눠 저장하는 구조를 만들었고 최우수상을 받았습니다. 장소 추출 정확도는 측정하지 못했습니다.</p></div>
+          <div class="ts-row"><span class="tag p">문제</span><p>행사 포스터에는 주최 · 주관 · 후원 기관과 실제 장소가 함께 적혀 있고, 장소가 아예 없는 경우도 있음. 기관명이 장소 칸에 들어가면 캘린더에 잘못된 장소가 등록됨.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>장소 필드만 정의하면 기관명과 실제 장소를 구분할 기준도, 장소가 없을 때의 처리 규칙도 없음.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>추출 프롬프트에 두 가지 규칙을 넣었음. "주최 · 주관 · 후원 · 예매처 · 기관명은 장소가 아니며 location은 null, 기관 정보는 notes에 기록", "장소가 애매하면 절대 추정하지 말고 null". 출력은 JSON 배열로 받도록 함.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>기관명을 장소로 채우는 대신 <b>장소는 null, 기관 정보는 메모</b>로 나눠 저장하는 구조를 만들었고 최우수상을 받았음. 장소 추출 정확도는 측정하지 못함.</p></div>
           <div class="ts-panel">
             <p class="t">출력 JSON 필드</p>
             <p style="margin:0;font-size:14px"><code>date</code> <code>start_time</code> <code>end_time</code> <code>title</code> <code>location</code> <code>notes</code> <code>source_type</code> <code>category</code></p>
@@ -150,22 +164,22 @@
 
         <article class="ts">
           <h3>② 응답에 설명 문장이 섞여 파싱이 깨지는 문제: 실패하면 빈 배열</h3>
-          <div class="ts-row"><span class="tag p">문제</span><p>LLM이 JSON 앞뒤에 설명 문장이나 코드 블록 표시를 붙이면 그대로 파싱할 수 없었습니다.</p></div>
-          <div class="ts-row"><span class="tag s">해결</span><p>응답에서 첫 <code>[</code>부터 마지막 <code>]</code>까지만 잘라 파싱하고, 배열이 없거나 파싱에 실패하면 예외 대신 빈 배열을 돌려 잘못된 일정이 저장되지 않게 했습니다. 확장 버전에서는 프롬프트에도 "설명 · 마크다운 없이 JSON 배열만"을 명시했습니다.</p></div>
-          <div class="ts-row"><span class="tag r">결과</span><p>이후 파서를 분리해 정상 JSON · 코드 블록 JSON · 배열 없는 응답 · 잘못된 JSON · 빈 배열 5가지 모의 입력의 처리를 확인했습니다. 실제 LLM의 JSON 생성 성공률 측정은 아닙니다.</p></div>
+          <div class="ts-row"><span class="tag p">문제</span><p>LLM이 JSON 앞뒤에 설명 문장이나 코드 블록 표시를 붙이면 그대로 파싱할 수 없었음.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>응답에서 첫 <code>[</code>부터 마지막 <code>]</code>까지만 잘라 파싱하고, 배열이 없거나 파싱에 실패하면 예외 대신 빈 배열을 돌려 잘못된 일정이 저장되지 않게 함. 확장 버전에서는 프롬프트에도 "설명 · 마크다운 없이 JSON 배열만"을 명시함.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>이후 파서를 분리해 정상 JSON · 코드 블록 JSON · 배열 없는 응답 · 잘못된 JSON · 빈 배열 5가지 모의 입력의 처리를 확인함. 실제 LLM의 JSON 생성 성공률 측정은 아님.</p></div>
         </article>
 
         <article class="ts">
           <h3>③ 한 LLM이 대화 · 추출을 함께 맡던 구조: 역할 분리와 재질의</h3>
-          <div class="ts-row"><span class="tag p">문제</span><p>대회 버전은 LLM 인스턴스 하나(최근 대화 4턴 기억)가 대화와 일정 추출을 함께 맡았습니다. PDF 질의응답을 더하려면 기능마다 다른 온도와 출력 형식이 필요했습니다.</p></div>
-          <div class="ts-row"><span class="tag s">해결</span><p>챗봇(0.2) · PDF RAG(0.2) · 일정 추출(0.1)로 인스턴스를 나눴습니다. 추출은 대화 기억 없이 단독으로 호출하고, 챗봇 응답은 <code>{answer, source_data, confidence, needs_retry}</code>로 받아 <code>needs_retry</code>면 DB를 다시 조회해 한 번 더 묻게 했습니다.</p></div>
-          <div class="ts-row"><span class="tag r">결과</span><p>기능별로 프롬프트를 따로 고칠 수 있는 구조가 됐고, AI 엔드포인트가 9개에서 13개로 늘었습니다.</p></div>
+          <div class="ts-row"><span class="tag p">문제</span><p>대회 버전은 LLM 인스턴스 하나(최근 대화 4턴 기억)가 대화와 일정 추출을 함께 맡았음. PDF 질의응답을 더하려면 기능마다 다른 온도와 출력 형식이 필요함.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>챗봇(0.2) · PDF RAG(0.2) · 일정 추출(0.1)로 인스턴스를 나눴음. 추출은 대화 기억 없이 단독으로 호출하고, 챗봇 응답은 <code>{answer, source_data, confidence, needs_retry}</code>로 받아 <code>needs_retry</code>면 DB를 다시 조회해 한 번 더 묻게 함.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>기능별로 프롬프트를 따로 고칠 수 있는 구조가 됐고, AI 엔드포인트가 9개에서 13개로 늘었음.</p></div>
         </article>
       </section>
 
       <section id="prompt">
         <h2>개발 프롬프트 설계 (K Intelligence)</h2>
-        <p>대회 당시 서버 전체를 한 번에 생성하도록 요청하면 일부 기능이 빠지는 일이 있었습니다. 그래서 개발 요청을 단계로 나누고, 단계마다 필요한 맥락만 주는 방식을 정리해 발표했습니다.</p>
+        <p>대회 당시 서버 전체를 한 번에 생성하도록 요청하면 일부 기능이 빠지는 일이 있었음. 그래서 개발 요청을 단계로 나누고, 단계마다 필요한 맥락만 주는 방식을 정리해 발표함.</p>
         <ul class="features">
           <li><b>1. 목표 전달 · 구체화</b> - 서비스 목표와 화면 구성을 먼저 합의</li>
           <li><b>2. 디렉터리 구조</b> - 파일 구조를 먼저 출력하게 해 이후 요청의 기준으로 사용</li>
@@ -173,7 +187,7 @@
           <li><b>4. AI 모듈</b> - CLOVA Studio 예제 코드를 함께 넣어 llm · ocr · stt · tts 모듈 생성</li>
           <li><b>5. Express 서버</b> - 프록시 · 파일 업로드 · 임시 파일 삭제 · MySQL 풀 조건을 명시해 생성</li>
         </ul>
-        <p>개발용 시스템 프롬프트에는 단계적 사고를 유도하는 문장("Take a deep breath and work on this problem step-by-step")을 넣고 같은 요청으로 적용 전후를 비교했습니다. 정성 비교였고 수치로 측정하지는 않았습니다.</p>
+        <p>개발용 시스템 프롬프트에는 단계적 사고를 유도하는 문장("Take a deep breath and work on this problem step-by-step")을 넣고 같은 요청으로 적용 전후를 비교함. 정성 비교였고 수치로 측정하지는 않았음.</p>
       </section>
 
       <section id="extend">
@@ -182,7 +196,7 @@
           <tr><th>영역</th><th>대회 버전 → 확장 버전</th></tr>
           <tr><td>LLM 구성</td><td>인스턴스 1개가 대화 · 추출 담당 → 챗봇 · PDF RAG · 일정 추출 3개로 분리</td></tr>
           <tr><td>음성</td><td>텍스트 변환까지만 → 변환 후 제목 · 날짜 · 장소 추출, 일정으로 저장</td></tr>
-          <tr><td>문서</td><td>없음 → PDF를 250자 청크(중첩 40)로 나눠 ClovaX 임베딩, FAISS k=5 검색, 문서 밖 질문에는 "답변이 어렵습니다"</td></tr>
+          <tr><td>문서</td><td>없음 → PDF를 250자 청크(중첩 40)로 나눠 ClovaX 임베딩, FAISS k=5 검색, 문서 밖 질문에는 "답변이 어려움"</td></tr>
           <tr><td>DB 연계</td><td>없음 → 저장된 일정과 최근 OCR 결과 50건을 조회해 질문 앞에 맥락으로 주입</td></tr>
           <tr><td>진입점</td><td>프론트가 AI 서버를 직접 호출 → 모든 요청을 Express <code>/api</code> 하나로 받아 AI 서버로 프록시</td></tr>
         </table>
@@ -190,9 +204,9 @@
 
       <section id="retro">
         <h2>회고</h2>
-        <p>3일짜리 대회에서 가장 효과가 컸던 것은 더 좋은 모델이 아니라 <b>"모르면 비워 둔다"</b>는 규칙이었습니다. LLM을 서비스에 붙일 때는 정답을 잘 맞히게 하는 것만큼 <span class="mark">틀릴 때 어떻게 멈추게 할지</span>를 먼저 정해야 한다는 것을 배웠습니다.</p>
-        <p>다시 코드를 점검하며 부족한 점도 확인했습니다. 상대 날짜 변환 규칙은 문서에만 있고 실행 프롬프트에 빠져 있었고, 확장하면서 장소 규칙이 짧아졌으며, 일부 API가 사용자 ID를 고정값으로 쓰고 있어 사용자별 데이터 분리가 되지 않습니다.</p>
-        <p>프롬프트를 바꿀 때마다 같은 질문 세트로 비교했어야 했습니다. 그래서 입력 유형별 평가 세트와 실행 스크립트를 만들었고, 다음 단계는 두 프롬프트의 필드별 정확도와 장소를 지어내는 비율을 같은 세트로 재는 것입니다.</p>
+        <p>3일짜리 대회에서 가장 효과가 컸던 것은 더 좋은 모델이 아니라 <b>"모르면 비워 둔다"</b>는 규칙. LLM을 서비스에 붙일 때는 정답을 잘 맞히게 하는 것만큼 <span class="mark">틀릴 때 어떻게 멈추게 할지</span>를 먼저 정해야 한다는 것을 배웠음.</p>
+        <p>다시 코드를 점검하며 부족한 점도 확인함. 상대 날짜 변환 규칙은 문서에만 있고 실행 프롬프트에 빠져 있었고, 확장하면서 장소 규칙이 짧아졌으며, 일부 API가 사용자 ID를 고정값으로 쓰고 있어 사용자별 데이터 분리가 되지 않음.</p>
+        <p>프롬프트를 바꿀 때마다 같은 질문 세트로 비교했어야 함. 그래서 입력 유형별 평가 세트와 실행 스크립트를 만들었고, 다음 단계는 두 프롬프트의 필드별 정확도와 장소를 지어내는 비율을 같은 세트로 재는 것.</p>
       </section>
     </div>
   </div>
