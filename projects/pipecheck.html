@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIPE CHECK | 정지성 Portfolio</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../assets/style.css?v=20261124e">
+</head>
+<body>
+<nav class="nav" aria-label="주요 메뉴">
+  <div class="wrap">
+    <a class="brand" href="../index.html#about">정지성</a>
+    <ul><li><a href="../index.html#about">About</a></li><li><a href="../index.html#skills">Skills</a></li><li><a href="../index.html#projects">Projects</a></li></ul>
+  </div>
+</nav>
+
+<main class="wrap">
+  <a class="back" href="../index.html#projects">← 프로젝트 목록으로 돌아가기</a>
+  <header class="detail-head">
+    <p class="eyebrow">Project Detail</p>
+    <h1>PIPE CHECK</h1>
+    <p class="sub">공공데이터로 점검이 급한 하수관로 구역을 고르고, 소형 로봇이 관로 안을 주행하며 결함을 탐지 · 기록하는 AIoT 점검 시스템</p>
+    <div class="meta-box">
+      <div><span>개발 기간</span><strong>2026.07 - 2026.08</strong></div>
+      <div><span>개발 인원</span><strong>SSAFY 공통 프로젝트 (6인)</strong></div>
+      <div><span>담당 역할</span><strong>결함 탐지 데이터 · 모델 · 3D 복원</strong></div>
+    </div>
+  </header>
+
+  <div class="hero-media"><img src="../assets/pipe-cover.webp?v=2" alt="PIPE CHECK 대표 이미지: 관로 위에 선 점검 로봇이 PIPE CHECK 로고를 비추는 장면"></div>
+
+  <div class="hero-media pad">
+    <p class="flow-title">결함 탐지</p>
+    <div class="flow">
+      <div class="step mine"><b>공개 CCTV 데이터</b>COCO 2,000장 · EDA · 8:1:1 분할</div><div class="arrow">→</div>
+      <div class="step mine"><b>의사 마스크</b>SAM 2.1 · bbox → 폴리곤</div><div class="arrow">→</div>
+      <div class="step mine"><b>모형 관로 데이터</b>촬영 프레임 146장 · 균열 / 표면 손상</div><div class="arrow">→</div>
+      <div class="step mine"><b>세그멘테이션 학습</b>YOLO11n-seg · YOLO26n-seg</div><div class="arrow">→</div>
+      <div class="step"><b>로봇 실시간 탐지</b>AI 에이전트 · 대시보드 스트리밍</div>
+    </div>
+    <p class="flow-title" style="margin-top:24px">3D 복원</p>
+    <div class="flow">
+      <div class="step"><b>주행 영상</b>로봇이 관로를 훑으며 촬영</div><div class="arrow">→</div>
+      <div class="step mine"><b>카메라 포즈</b>COLMAP</div><div class="arrow">→</div>
+      <div class="step mine"><b>3DGS 학습</b>gsplat · 가우시안 최적화</div><div class="arrow">→</div>
+      <div class="step mine"><b>뷰어용 변환</b>PLY → ksplat</div><div class="arrow">→</div>
+      <div class="step mine"><b>웹 3D 뷰어</b>React · GaussianSplats3D</div>
+    </div>
+    <p class="flow-legend">진한 테두리: 직접 구현한 단계 · 로봇 제어 에이전트, 우선순위 엔진, 백엔드는 팀원 작업</p>
+  </div>
+
+  <div class="detail-grid">
+    <ul class="toc">
+      <li><a href="#overview">프로젝트 개요</a></li>
+      <li><a href="#robot">로봇 · 시연</a></li>
+      <li><a href="#data">학습 데이터</a></li>
+      <li><a href="#results">탐지 모델 결과</a></li>
+      <li><a href="#gs">3D 복원</a></li>
+      <li><a href="#stack">담당 기술</a></li>
+      <li><a href="#role">담당 기능</a></li>
+      <li><a href="#ts">트러블슈팅</a></li>
+      <li><a href="#retro">회고</a></li>
+    </ul>
+    <div class="content">
+      <section id="overview">
+        <h2>프로젝트 개요</h2>
+        <div class="lede">
+          <p>지반침하 이력 · 관로 노후도 · 강수량 같은 공공데이터로 전국 시군구의 점검 우선순위를 매기고, 소형 로봇이 관로 모형 안을 주행하며 결함을 찾아 웹 대시보드에 실시간으로 보여 주는 시스템. 점검 뒤에는 보고서와 관로 내부 3D 복원 제공.</p>
+          <p>6명 중 <span class="mark">결함 탐지 모델의 데이터와 학습, 관로 3D 복원과 웹 뷰어</span> 담당. 공개 하수관 CCTV 데이터 변환 · 분할과 SAM 2.1 의사 마스크, 모형 관로 데이터로 학습한 세그멘테이션 모델, 3D Gaussian Splatting 학습부터 브라우저 뷰어까지 진행함.</p>
+        </div>
+        <div class="stats">
+          <div><b>0.91</b><span>모형 관로 mask mAP50 (YOLO26n-seg · 검증 29장)</span></div>
+          <div><b>146장</b><span>모형 관로 세그멘테이션 데이터</span></div>
+          <div><b>우수상</b><span>SSAFY 공통 프로젝트</span></div>
+        </div>
+      </section>
+
+      <section id="robot">
+        <h2>로봇 · 시연</h2>
+        <div class="shots robot-pair">
+          <figure><img src="../assets/pipe-robot.webp" alt="웹캠과 광각 렌즈, 초음파 센서, LED를 단 4륜 점검 로봇" loading="lazy" style="border:0;background:transparent"><figcaption>점검 로봇 (팀 제작)</figcaption></figure>
+          <ul class="features">
+            <li><b>제어</b> - Raspberry Pi 5 · L298N 모터 드라이버, 명령 TTL · 통신 단절 시 자동 정지</li>
+            <li><b>카메라</b> - 광각 렌즈를 단 웹캠 · LED 조명, 관로 내부 영상과 결함 탐지 입력</li>
+            <li><b>센서</b> - 초음파(HC-SR04) 정면 거리 · IMU(MPU6050) 자세</li>
+            <li><b>내 역할</b> - 이 카메라 영상으로 결함 탐지 모델 학습과 관로 3D 복원</li>
+          </ul>
+        </div>
+        <figure style="margin:24px 0 0">
+          <video src="../assets/pipe-demo.mp4" poster="../assets/pipe-demo-poster.webp" controls muted playsinline preload="metadata" style="width:100%;border:1px solid var(--line);border-radius:12px;background:#000"></video>
+          <figcaption style="text-align:center;font-size:13px;color:var(--muted);margin-top:10px">시연 영상 (3분 36초): 대시보드의 실시간 관로 카메라 · 결함 통계와 모형 관로를 주행하는 로봇</figcaption>
+        </figure>
+      </section>
+
+      <section id="data">
+        <h2>학습 데이터</h2>
+        <table class="tech">
+          <tr><th>데이터</th><th>내용</th></tr>
+          <tr><td>공개 하수관 CCTV</td><td>관로 내부 이미지 2,000장 · 결함 표시 2,868개 (COCO 형식, 640×360). 학습 1,600 · 검증 200 · 테스트 200장으로 8:1:1 분할</td></tr>
+          <tr><td>모형 관로</td><td>로봇 카메라로 찍은 모형 관로 프레임 146장 · 균열(defect) · 표면 손상(damage) 2개 클래스, 학습 102 · 검증 29 · 테스트 15장</td></tr>
+        </table>
+        <div class="ts-panel">
+          <p class="t">공개 CCTV 데이터 클래스별 표시 수</p>
+          <div class="bar-row"><span>균열 (CL)</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="v">2,827</span></div>
+          <div class="bar-row"><span>기타 (EX)</span><div class="bar-track"><div class="bar-fill" style="width:1.5%"></div></div><span class="v">41</span></div>
+          <p class="n">결함 표시의 98.6%가 종방향 균열(CL) 한 클래스. 이 데이터에는 박스(bbox)만 있고 세그멘테이션 마스크가 없어 SAM 2.1로 의사 마스크를 만들어 사용함.</p>
+        </div>
+      </section>
+
+      <section id="results">
+        <h2>탐지 모델 결과</h2>
+        <table class="tech">
+          <tr><th>데이터</th><th>모델</th><th>검증 지표</th></tr>
+          <tr><td>공개 CCTV (검증 200장)</td><td>YOLO11n 탐지</td><td>mAP50 0.32</td></tr>
+          <tr><td>공개 CCTV (검증 200장)</td><td>YOLO11n-seg (SAM 2.1 의사 마스크)</td><td>mask mAP50 0.26</td></tr>
+          <tr><td>모형 관로 (검증 29장)</td><td>YOLO11n-seg</td><td>mask mAP50 0.94</td></tr>
+          <tr><td>모형 관로 (검증 29장)</td><td><b>YOLO26n-seg</b></td><td><b>mask mAP50 0.91</b></td></tr>
+          <tr><td>모형 관로 (테스트 15장)</td><td><b>YOLO26n-seg</b></td><td><b>mask mAP50 0.98</b> · mAP50-95 0.89</td></tr>
+        </table>
+        <div class="shots" style="margin-top:20px">
+          <figure><img src="../assets/pipe-card.webp" alt="모형 관로 프레임에서 균열과 표면 손상을 찾은 YOLO26n-seg 추론 결과" loading="lazy"><figcaption>모형 관로 추론: 균열(하늘색) · 표면 손상(파란색) 마스크</figcaption></figure>
+          <div>
+            <ul class="features">
+              <li><b>공개 CCTV 모델</b> - 정밀도는 0.84로 높지만 재현율이 0.31로 낮아 균열 대부분을 놓침</li>
+              <li><b>모형 관로 모델</b> - 시연 환경과 같은 장면으로 학습해 mask mAP50 0.91 달성</li>
+              <li><b>서비스 연동</b> - 로봇 AI 에이전트가 같은 이름의 YOLO26n-seg 가중치와 클래스(defect · damage)를 불러와 실시간 탐지에 사용(연동은 팀원)</li>
+            </ul>
+          </div>
+        </div>
+        <p class="callout">모형 관로 146장은 영상 한 개에서 뽑은 프레임을 무작위로 나눈 것이라, 평가 프레임의 바로 앞뒤 프레임이 학습에 들어 있음. 그래서 검증 · 테스트 수치는 실제보다 높게 나온 값이고, 실제 하수관 성능도 아님.</p>
+      </section>
+
+      <section id="gs">
+        <h2>3D 복원</h2>
+        <p>점검이 끝나면 흔들리는 주행 영상만 남는 문제를 줄이기 위해, 촬영 영상으로 관로 내부를 3D로 복원해 브라우저에서 돌려 볼 수 있게 함.</p>
+        <div class="stats">
+          <div><b>1,404장</b><span>4,210프레임 중 3프레임마다 가장 선명한 장면 선택</span></div>
+          <div><b>27.3 dB</b><span>PSNR · SSIM 0.917 (학습에서 뺀 8장마다 1장 기준)</span></div>
+          <div><b>22만 개</b><span>가우시안 수 · 렌더 약 0.006초/프레임</span></div>
+        </div>
+        <ul class="features">
+          <li><b>프레임 선택</b> - 주행 영상 4,210프레임을 3장씩 묶어 가장 선명한 1장만 남겨 1,404장으로 축소</li>
+          <li><b>카메라 포즈</b> - COLMAP 연속 매칭으로 1,404장 모두의 촬영 위치를 역추적하고 희소 점군으로 초기화</li>
+          <li><b>3DGS 학습</b> - gsplat 라이브러리로 위치 · 크기 · 색 · 투명도를 가진 가우시안 수십만 개를 실제 사진과 같아질 때까지 최적화(L1 + SSIM 손실), 오차가 큰 곳은 가우시안을 쪼개고 불필요한 것은 제거</li>
+          <li><b>웹 뷰어</b> - 학습 결과 PLY를 GaussianSplats3D의 ksplat 형식으로 바꾸는 변환 스크립트를 만들고, React 대시보드에 3D 뷰어 화면 추가</li>
+          <li><b>배포</b> - 씬 파일을 재구성본(p5_w3)으로 교체할 때 이름까지 바꿔 브라우저가 예전 씬을 캐시에서 띄우지 않게 처리</li>
+        </ul>
+        <figure style="margin:24px 0 0">
+          <video src="../assets/pipe-3d.mp4" poster="../assets/pipe-3d-poster.webp" controls muted playsinline preload="metadata" style="width:100%;border:1px solid var(--line);border-radius:12px;background:#000"></video>
+          <figcaption style="text-align:center;font-size:13px;color:var(--muted);margin-top:10px">대시보드 3D 뷰어에서 복원한 관로 내부를 돌려 보는 화면</figcaption>
+        </figure>
+      </section>
+
+      <section id="stack">
+        <h2>담당 기술</h2>
+        <table class="tech">
+          <tr><th>영역</th><th>사용 기술</th></tr>
+          <tr><td>데이터 처리</td><td>Python · COCO / YOLO 형식 변환 · EDA · 8:1:1 분할</td></tr>
+          <tr><td>비전 모델</td><td>Ultralytics YOLO11n · YOLO11n-seg · YOLO26n-seg · SAM 2.1</td></tr>
+          <tr><td>3D 복원</td><td>COLMAP · gsplat(3D Gaussian Splatting) · PyTorch · CUDA</td></tr>
+          <tr><td>웹</td><td>React · TypeScript · Vite · GaussianSplats3D · MapLibre GL · Nginx</td></tr>
+        </table>
+      </section>
+
+      <section id="role">
+        <h2>담당 기능</h2>
+        <ul class="features">
+          <li><b>데이터 스크립트 6종</b> - COCO 데이터 분석, 8:1:1 분할, COCO → YOLO 변환, SAM 2.1 의사 마스크 생성(기본 · 확장 데이터 버전)</li>
+          <li><b>결함 탐지 모델</b> - 공개 CCTV 데이터로 YOLO11n 탐지 · 세그멘테이션, 모형 관로 데이터로 YOLO11n-seg · YOLO26n-seg 학습과 비교</li>
+          <li><b>3D 복원</b> - gsplat 기반 3DGS 학습 환경 구성과 관로 씬 재구성</li>
+          <li><b>웹 3D 뷰어</b> - PLY → ksplat 변환 스크립트, 대시보드 3D 화면</li>
+          <li><b>배포 오류 수정</b> - 배포 빌드에서만 우선순위 지도 구역이 그려지지 않던 문제 해결</li>
+        </ul>
+      </section>
+
+      <section id="ts">
+        <h2>트러블슈팅</h2>
+
+        <article class="ts">
+          <h3>① 박스만 있는 데이터로 세그멘테이션 학습: SAM 2.1 의사 마스크</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>균열 모양과 면적을 보여 주려면 세그멘테이션 모델이 필요했지만, 공개 CCTV 데이터에는 결함 위치를 나타내는 박스만 있고 마스크가 없었음.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>각 박스를 SAM 2.1 base 모델의 프롬프트로 넣어 박스 안 결함 영역을 폴리곤으로 뽑고, YOLO 세그멘테이션 형식으로 변환함. SAM은 학습하지 않고 라벨 생성에만 사용.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>추가 라벨링 없이 YOLO11n-seg 학습 데이터를 만들었고, 검증 mask mAP50 0.26 기록. 이후 모형 관로 데이터 학습에도 같은 세그멘테이션 파이프라인 사용.</p></div>
+        </article>
+
+        <article class="ts">
+          <h3>② 공개 데이터 모델이 시연 환경에서 약한 문제: 모형 관로 데이터로 재학습</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>공개 CCTV 데이터로 학습한 탐지 모델은 검증 mAP50 0.32, 재현율 0.31로 균열 대부분을 놓쳤음.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>결함 표시의 98.6%가 한 클래스에 몰려 있었고, 실제 하수관 CCTV 장면은 로봇이 달리는 모형 관로와 조명 · 재질 · 결함 형태가 달랐음.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>로봇 카메라로 찍은 모형 관로 프레임 146장에 균열 · 표면 손상 마스크를 붙인 데이터를 만들고, YOLO11n-seg와 YOLO26n-seg를 1024 해상도로 학습해 비교함.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>모형 관로 검증 mask mAP50 0.91(YOLO26n-seg)을 기록했고, 로봇 에이전트의 실시간 탐지에 같은 모델 사용. 다만 같은 영상의 이웃 프레임으로 평가한 값이라 높게 나왔음(회고 참고).</p></div>
+        </article>
+
+        <article class="ts">
+          <h3>③ 배포 빌드에서만 지도 구역이 사라지는 문제: 워커 파일 누락과 MIME 형식</h3>
+          <div class="ts-row"><span class="tag p">문제</span><p>배포한 대시보드에서 배경지도와 범례는 보이는데 우선순위 시군구 영역이 하나도 그려지지 않았음. 개발 서버에서는 정상.</p></div>
+          <div class="ts-row"><span class="tag c">원인</span><p>두 가지가 겹침. MapLibre가 워커 파일 경로를 실행 중에 조립해 빌드 산출물에 워커가 빠졌고(404), 고친 뒤에도 Nginx가 <code>.mjs</code>를 JavaScript가 아닌 형식으로 보내 브라우저가 워커 실행을 거부함.</p></div>
+          <div class="ts-row"><span class="tag s">해결</span><p>Vite 플러그인으로 워커와 공유 청크를 같은 폴더에 고정 이름으로 복사하고 지도에 워커 경로를 지정, Nginx에 해당 경로의 형식을 JavaScript로 지정함. 헤드리스 브라우저로 배포본을 직접 열어 원인 확인.</p></div>
+          <div class="ts-row"><span class="tag r">결과</span><p>배포 환경에서 시군구 구역이 정상 표시되고, 원인과 조치를 커밋과 설정 주석에 기록함.</p></div>
+        </article>
+      </section>
+
+      <section id="retro">
+        <h2>회고</h2>
+        <p>좋은 공개 데이터라도 <span class="mark">모델이 실제로 볼 장면과 다르면 성능이 나오지 않는다</span>는 것을 체감함. 시연 환경과 같은 장면으로 만든 146장이 2,000장의 공개 데이터보다 시연에 더 맞는 모델을 만들었음.</p>
+        <p>다시 점검하며 부족한 점도 확인함.</p>
+        <ul class="features">
+          <li><b>프레임 단위 분할</b> - 영상 한 개의 프레임을 무작위로 나눠 거의 같은 장면이 학습과 평가에 함께 들어감. 다른 날 · 다른 구간에서 찍은 영상을 평가용으로 따로 남겼어야 함</li>
+          <li><b>문서와 데이터 불일치</b> - 모듈 README에는 공개 데이터가 10,000장으로 적혀 있지만 실제 저장된 어노테이션은 2,000장</li>
+          <li><b>클래스 불균형</b> - 공개 데이터의 98.6%가 한 클래스였지만 가중치 · 표본 조정 없이 학습함</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <a class="next" href="sumtech.html"><div><span>다음 프로젝트</span><b>요즘어때</b></div><span class="arr">→</span></a>
+</main>
+
+<footer><div class="wrap"><span>© 2026 정지성. All rights reserved.</span><a href="mailto:wjdwltjd324800@gmail.com">wjdwltjd324800@gmail.com</a></div></footer>
+</body>
+</html>
