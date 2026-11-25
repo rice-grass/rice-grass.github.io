@@ -160,6 +160,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .stats div:last-child { border-right: 0; }
 .stats b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
 .stats span { font-size: 12px; color: var(--muted); }
+.stats.four { grid-template-columns: repeat(4, 1fr); }
 
 .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .shots.one { grid-template-columns: 1fr; }
@@ -248,7 +249,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
   .meta-box { grid-template-columns: 1fr; }
   .detail-grid { grid-template-columns: 1fr; }
   .toc { display: none; }
-  .stats { grid-template-columns: 1fr; }
+  .stats, .stats.four { grid-template-columns: 1fr; }
   .stats div { border-right: 0; border-bottom: 1px solid var(--line); }
   .stats div:last-child { border-bottom: 0; }
   .shots, .shots.three, .shots.ratio-pair, .shots.robot-pair { grid-template-columns: 1fr; }
